@@ -1,0 +1,15 @@
+E:\EXE2\PalRide\PalService\obj\Debug\net8.0\PalService.csproj.AssemblyReference.cache
+E:\EXE2\PalRide\PalService\obj\Debug\net8.0\PalService.GeneratedMSBuildEditorConfig.editorconfig
+E:\EXE2\PalRide\PalService\obj\Debug\net8.0\PalService.AssemblyInfoInputs.cache
+E:\EXE2\PalRide\PalService\obj\Debug\net8.0\PalService.AssemblyInfo.cs
+E:\EXE2\PalRide\PalService\obj\Debug\net8.0\PalService.csproj.CoreCompileInputs.cache
+E:\EXE2\PalRide\PalService\bin\Debug\net8.0\PalService.deps.json
+E:\EXE2\PalRide\PalService\bin\Debug\net8.0\PalService.dll
+E:\EXE2\PalRide\PalService\bin\Debug\net8.0\PalService.pdb
+E:\EXE2\PalRide\PalService\bin\Debug\net8.0\PalRepository.dll
+E:\EXE2\PalRide\PalService\bin\Debug\net8.0\PalRepository.pdb
+E:\EXE2\PalRide\PalService\obj\Debug\net8.0\PalService.csproj.Up2Date
+E:\EXE2\PalRide\PalService\obj\Debug\net8.0\PalService.dll
+E:\EXE2\PalRide\PalService\obj\Debug\net8.0\refint\PalService.dll
+E:\EXE2\PalRide\PalService\obj\Debug\net8.0\PalService.pdb
+E:\EXE2\PalRide\PalService\obj\Debug\net8.0\ref\PalService.dll

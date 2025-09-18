@@ -1,0 +1,428 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\EXE2\\PalRide\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\exe2\\palride\\palservice\\tripservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\tripservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\exe2\\palride\\palservice\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\exe2\\palride\\palservice\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\exe2\\palride\\palservice\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\exe2\\palride\\palservice\\interface\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\interface\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\exe2\\palride\\palservice\\interface\\itripservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\interface\\itripservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\exe2\\palride\\palservice\\interface\\iemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\interface\\iemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\exe2\\palride\\palservice\\interface\\ibookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\interface\\ibookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|e:\\exe2\\palride\\palapi\\controllers\\tripscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|solutionrelative:palapi\\controllers\\tripscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|e:\\exe2\\palride\\palapi\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|solutionrelative:palapi\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|e:\\exe2\\palride\\palrepository\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|solutionrelative:palrepository\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|e:\\exe2\\palride\\palapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|solutionrelative:palapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|e:\\exe2\\palride\\palapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|solutionrelative:palapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|e:\\exe2\\palride\\palrepository\\palrepository\\passwordresettokenrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|solutionrelative:palrepository\\palrepository\\passwordresettokenrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|e:\\exe2\\palride\\palrepository\\palrepository\\bookingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|solutionrelative:palrepository\\palrepository\\bookingrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|e:\\exe2\\palride\\palrepository\\dtos\\bookingdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|solutionrelative:palrepository\\dtos\\bookingdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|e:\\exe2\\palride\\palrepository\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|solutionrelative:palrepository\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|e:\\exe2\\palride\\palrepository\\palrepository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|solutionrelative:palrepository\\palrepository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|e:\\exe2\\palride\\palapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|solutionrelative:palapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|e:\\exe2\\palride\\palapi\\palapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|solutionrelative:palapi\\palapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|e:\\exe2\\palride\\palrepository\\dbcontexts\\palridecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|solutionrelative:palrepository\\dbcontexts\\palridecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\EXE2\\PalRide\\PalRepository\\Models\\PalRideContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:PalRepository\\Models\\PalRideContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|e:\\exe2\\palride\\palrepository\\basic\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450F973A-83E2-4036-9120-AC688A4E597F}|PalRepository\\PalRepository.csproj|solutionrelative:palrepository\\basic\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\exe2\\palride\\palservice\\palservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\palservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ITripService.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalService\\Interface\\ITripService.cs",
+              "RelativeDocumentMoniker": "PalService\\Interface\\ITripService.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalService\\Interface\\ITripService.cs",
+              "RelativeToolTip": "PalService\\Interface\\ITripService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T19:34:26.929Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IBookingService.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalService\\Interface\\IBookingService.cs",
+              "RelativeDocumentMoniker": "PalService\\Interface\\IBookingService.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalService\\Interface\\IBookingService.cs",
+              "RelativeToolTip": "PalService\\Interface\\IBookingService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T19:34:18.488Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TripService.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalService\\TripService.cs",
+              "RelativeDocumentMoniker": "PalService\\TripService.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalService\\TripService.cs",
+              "RelativeToolTip": "PalService\\TripService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T19:30:37.214Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "User.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalRepository\\Models\\User.cs",
+              "RelativeDocumentMoniker": "PalRepository\\Models\\User.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalRepository\\Models\\User.cs",
+              "RelativeToolTip": "PalRepository\\Models\\User.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T19:07:32.67Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "TripsController.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalAPI\\Controllers\\TripsController.cs",
+              "RelativeDocumentMoniker": "PalAPI\\Controllers\\TripsController.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalAPI\\Controllers\\TripsController.cs",
+              "RelativeToolTip": "PalAPI\\Controllers\\TripsController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAQwCIAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T18:52:48.328Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BookingsController.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalAPI\\Controllers\\BookingsController.cs",
+              "RelativeDocumentMoniker": "PalAPI\\Controllers\\BookingsController.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalAPI\\Controllers\\BookingsController.cs",
+              "RelativeToolTip": "PalAPI\\Controllers\\BookingsController.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAwwDgAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T18:19:26.85Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IAuthService.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalService\\Interface\\IAuthService.cs",
+              "RelativeDocumentMoniker": "PalService\\Interface\\IAuthService.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalService\\Interface\\IAuthService.cs",
+              "RelativeToolTip": "PalService\\Interface\\IAuthService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T14:50:42.972Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalService\\AuthService.cs",
+              "RelativeDocumentMoniker": "PalService\\AuthService.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalService\\AuthService.cs",
+              "RelativeToolTip": "PalService\\AuthService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEoBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T14:20:25.529Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BookingService.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalService\\BookingService.cs",
+              "RelativeDocumentMoniker": "PalService\\BookingService.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalService\\BookingService.cs",
+              "RelativeToolTip": "PalService\\BookingService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE4AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T18:23:35.291Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EmailService.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalService\\EmailService.cs",
+              "RelativeDocumentMoniker": "PalService\\EmailService.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalService\\EmailService.cs",
+              "RelativeToolTip": "PalService\\EmailService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T16:14:50.973Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "PasswordResetTokenRepository.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalRepository\\PalRepository\\PasswordResetTokenRepository.cs",
+              "RelativeDocumentMoniker": "PalRepository\\PalRepository\\PasswordResetTokenRepository.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalRepository\\PalRepository\\PasswordResetTokenRepository.cs",
+              "RelativeToolTip": "PalRepository\\PalRepository\\PasswordResetTokenRepository.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAA0wBoAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T16:25:12.649Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "BookingRepository.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalRepository\\PalRepository\\BookingRepository.cs",
+              "RelativeDocumentMoniker": "PalRepository\\PalRepository\\BookingRepository.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalRepository\\PalRepository\\BookingRepository.cs",
+              "RelativeToolTip": "PalRepository\\PalRepository\\BookingRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T18:26:46.037Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IEmailService.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalService\\Interface\\IEmailService.cs",
+              "RelativeDocumentMoniker": "PalService\\Interface\\IEmailService.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalService\\Interface\\IEmailService.cs",
+              "RelativeToolTip": "PalService\\Interface\\IEmailService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T16:28:58.737Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "BookingDto.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalRepository\\DTOs\\BookingDto.cs",
+              "RelativeDocumentMoniker": "PalRepository\\DTOs\\BookingDto.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalRepository\\DTOs\\BookingDto.cs",
+              "RelativeToolTip": "PalRepository\\DTOs\\BookingDto.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T18:22:14.776Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalRepository\\DTOs\\LoginDto.cs",
+              "RelativeDocumentMoniker": "PalRepository\\DTOs\\LoginDto.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalRepository\\DTOs\\LoginDto.cs",
+              "RelativeToolTip": "PalRepository\\DTOs\\LoginDto.cs",
+              "ViewState": "AgIAAFUAAAAAAAAAAAA7wF8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T14:15:07.861Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalAPI\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "PalAPI\\Controllers\\AuthController.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalAPI\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "PalAPI\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAqwDAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T15:19:47.784Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalAPI\\Program.cs",
+              "RelativeDocumentMoniker": "PalAPI\\Program.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalAPI\\Program.cs",
+              "RelativeToolTip": "PalAPI\\Program.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAADQAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T15:18:58.925Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalRepository\\PalRepository\\UserRepository.cs",
+              "RelativeDocumentMoniker": "PalRepository\\PalRepository\\UserRepository.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalRepository\\PalRepository\\UserRepository.cs",
+              "RelativeToolTip": "PalRepository\\PalRepository\\UserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T14:48:06.443Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "PalAPI\\appsettings.json",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalAPI\\appsettings.json",
+              "RelativeToolTip": "PalAPI\\appsettings.json",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAkAAACEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-18T15:29:46.737Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "PalAPI",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalAPI\\PalAPI.csproj",
+              "RelativeDocumentMoniker": "PalAPI\\PalAPI.csproj",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalAPI\\PalAPI.csproj",
+              "RelativeToolTip": "PalAPI\\PalAPI.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-09-18T15:19:25.857Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "PalRideContext.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalRepository\\DBContexts\\PalRideContext.cs",
+              "RelativeDocumentMoniker": "PalRepository\\DBContexts\\PalRideContext.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalRepository\\DBContexts\\PalRideContext.cs",
+              "RelativeToolTip": "PalRepository\\DBContexts\\PalRideContext.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAA6wD8AAABNAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T15:15:15.63Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "PalRideContext.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalRepository\\Models\\PalRideContext.cs",
+              "RelativeDocumentMoniker": "PalRepository\\Models\\PalRideContext.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalRepository\\Models\\PalRideContext.cs",
+              "RelativeToolTip": "PalRepository\\Models\\PalRideContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T15:14:49.992Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "PalService",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalService\\PalService.csproj",
+              "RelativeDocumentMoniker": "PalService\\PalService.csproj",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalService\\PalService.csproj",
+              "RelativeToolTip": "PalService\\PalService.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-09-18T14:55:12.226Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "GenericRepository.cs",
+              "DocumentMoniker": "E:\\EXE2\\PalRide\\PalRepository\\Basic\\GenericRepository.cs",
+              "RelativeDocumentMoniker": "PalRepository\\Basic\\GenericRepository.cs",
+              "ToolTip": "E:\\EXE2\\PalRide\\PalRepository\\Basic\\GenericRepository.cs",
+              "RelativeToolTip": "PalRepository\\Basic\\GenericRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T14:03:36.261Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

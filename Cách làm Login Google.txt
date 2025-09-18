@@ -1,0 +1,7 @@
+Luồng hoạt động cho mobile:
+Mobile app gọi GET /api/auth/google-login-url → nhận clientId
+Mobile app dùng Google Sign-In SDK với clientId để đăng nhập
+Google trả về IdToken cho mobile app
+Mobile app gọi POST /api/auth/google-login với IdToken
+Server validate IdToken, tạo user mới (password: "string123") hoặc cập nhật user cũ
+Trả về JWT Bearer token để dùng trong Swagger

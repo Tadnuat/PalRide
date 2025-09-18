@@ -1,0 +1,23 @@
+﻿using PalRepository.DTOs;
+using PalRepository.DTOs.PalRide.API.Models.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PalService.Interface
+{
+    public interface IAuthService
+    {
+        Task<AuthResponseDto> LoginAsync(LoginDto dto);
+        Task<AuthResponseDto> LoginWithGoogleAsync(GoogleLoginDto dto);
+        Task<AuthResponseDto> RegisterAsync(RegisterDto dto);
+        Task<AuthResponseDto> VerifyOtpAsync(VerifyOtpDto dto);
+        Task<ResponseDto<UserDto>> UpdateUserAsync(int userId, UpdateUserDto dto);
+        Task<ResponseDto<bool>> DeleteUserAsync(string email);
+        Task<ResponseDto<bool>> ForgotPasswordAsync(ForgotPasswordDto dto);
+        Task<ResponseDto<bool>> ResetPasswordAsync(ResetPasswordDto dto);
+        Task<ResponseDto<bool>> ChangePasswordAsync(ChangePasswordDto dto);
+    }
+}
