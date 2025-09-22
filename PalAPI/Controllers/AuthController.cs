@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PalRepository.DTOs;
-using PalRepository.DTOs.PalRide.API.Models.DTOs;
+using PalService.DTOs;
 using PalService;
+using PalService.Interface;
 using System.Security.Claims;
 using System.Text.Json;
 

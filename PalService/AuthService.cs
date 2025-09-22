@@ -1,8 +1,7 @@
 ﻿using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using PalRepository.DTOs;
-using PalRepository.DTOs.PalRide.API.Models.DTOs;
+using PalService.DTOs;
 using PalRepository.Models;
 using PalRepository.PalRepository;
 using PalRepository.UnitOfWork;

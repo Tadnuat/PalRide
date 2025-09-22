@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\EXE2\\PalRide\\PalAPI\\PalAPI.csproj": {}
+    "E:\\Up GitHub\\PalRide\\PalAPI\\PalAPI.csproj": {}
   },
   "projects": {
-    "E:\\EXE2\\PalRide\\PalAPI\\PalAPI.csproj": {
+    "E:\\Up GitHub\\PalRide\\PalAPI\\PalAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\EXE2\\PalRide\\PalAPI\\PalAPI.csproj",
+        "projectUniqueName": "E:\\Up GitHub\\PalRide\\PalAPI\\PalAPI.csproj",
         "projectName": "PalAPI",
-        "projectPath": "E:\\EXE2\\PalRide\\PalAPI\\PalAPI.csproj",
+        "projectPath": "E:\\Up GitHub\\PalRide\\PalAPI\\PalAPI.csproj",
         "packagesPath": "C:\\Users\\TGC\\.nuget\\packages\\",
-        "outputPath": "E:\\EXE2\\PalRide\\PalAPI\\obj\\",
+        "outputPath": "E:\\Up GitHub\\PalRide\\PalAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\VS 2\\NuGetPackages"
@@ -33,8 +33,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "E:\\EXE2\\PalRide\\PalService\\PalService.csproj": {
-                "projectPath": "E:\\EXE2\\PalRide\\PalService\\PalService.csproj"
+              "E:\\Up GitHub\\PalRide\\PalService\\PalService.csproj": {
+                "projectPath": "E:\\Up GitHub\\PalRide\\PalService\\PalService.csproj"
               }
             }
           }
@@ -87,14 +87,14 @@
         }
       }
     },
-    "E:\\EXE2\\PalRide\\PalRepository\\PalRepository.csproj": {
+    "E:\\Up GitHub\\PalRide\\PalRepository\\PalRepository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\EXE2\\PalRide\\PalRepository\\PalRepository.csproj",
+        "projectUniqueName": "E:\\Up GitHub\\PalRide\\PalRepository\\PalRepository.csproj",
         "projectName": "PalRepository",
-        "projectPath": "E:\\EXE2\\PalRide\\PalRepository\\PalRepository.csproj",
+        "projectPath": "E:\\Up GitHub\\PalRide\\PalRepository\\PalRepository.csproj",
         "packagesPath": "C:\\Users\\TGC\\.nuget\\packages\\",
-        "outputPath": "E:\\EXE2\\PalRide\\PalRepository\\obj\\",
+        "outputPath": "E:\\Up GitHub\\PalRide\\PalRepository\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\VS 2\\NuGetPackages"
@@ -177,14 +177,14 @@
         }
       }
     },
-    "E:\\EXE2\\PalRide\\PalService\\PalService.csproj": {
+    "E:\\Up GitHub\\PalRide\\PalService\\PalService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\EXE2\\PalRide\\PalService\\PalService.csproj",
+        "projectUniqueName": "E:\\Up GitHub\\PalRide\\PalService\\PalService.csproj",
         "projectName": "PalService",
-        "projectPath": "E:\\EXE2\\PalRide\\PalService\\PalService.csproj",
+        "projectPath": "E:\\Up GitHub\\PalRide\\PalService\\PalService.csproj",
         "packagesPath": "C:\\Users\\TGC\\.nuget\\packages\\",
-        "outputPath": "E:\\EXE2\\PalRide\\PalService\\obj\\",
+        "outputPath": "E:\\Up GitHub\\PalRide\\PalService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\VS 2\\NuGetPackages"
@@ -206,8 +206,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "E:\\EXE2\\PalRide\\PalRepository\\PalRepository.csproj": {
-                "projectPath": "E:\\EXE2\\PalRide\\PalRepository\\PalRepository.csproj"
+              "E:\\Up GitHub\\PalRide\\PalRepository\\PalRepository.csproj": {
+                "projectPath": "E:\\Up GitHub\\PalRide\\PalRepository\\PalRepository.csproj"
               }
             }
           }

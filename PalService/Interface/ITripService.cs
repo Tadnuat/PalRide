@@ -1,4 +1,4 @@
-using PalRepository.DTOs.PalRide.API.Models.DTOs;
+using PalService.DTOs;
 
 namespace PalService.Interface
 {
@@ -10,5 +10,9 @@ namespace PalService.Interface
         Task<ResponseDto<TripDto>> GetTripByIdAsync(int tripId);
         Task<ResponseDto<bool>> CancelTripAsync(int tripId, int driverId);
         Task<ResponseDto<bool>> CompleteTripAsync(int tripId, int driverId);
+
+        // Search history
+        Task<ResponseDto<List<SearchHistoryItemDto>>> GetSearchHistoryAsync(int userId, int limit = 5);
+        Task<ResponseDto<bool>> SaveSearchHistoryAsync(int userId, SearchTripsDto dto);
     }
 }

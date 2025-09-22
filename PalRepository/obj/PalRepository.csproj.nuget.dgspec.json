@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\EXE2\\PalRide\\PalRepository\\PalRepository.csproj": {}
+    "E:\\Up GitHub\\PalRide\\PalRepository\\PalRepository.csproj": {}
   },
   "projects": {
-    "E:\\EXE2\\PalRide\\PalRepository\\PalRepository.csproj": {
+    "E:\\Up GitHub\\PalRide\\PalRepository\\PalRepository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\EXE2\\PalRide\\PalRepository\\PalRepository.csproj",
+        "projectUniqueName": "E:\\Up GitHub\\PalRide\\PalRepository\\PalRepository.csproj",
         "projectName": "PalRepository",
-        "projectPath": "E:\\EXE2\\PalRide\\PalRepository\\PalRepository.csproj",
+        "projectPath": "E:\\Up GitHub\\PalRide\\PalRepository\\PalRepository.csproj",
         "packagesPath": "C:\\Users\\TGC\\.nuget\\packages\\",
-        "outputPath": "E:\\EXE2\\PalRide\\PalRepository\\obj\\",
+        "outputPath": "E:\\Up GitHub\\PalRide\\PalRepository\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\VS 2\\NuGetPackages"

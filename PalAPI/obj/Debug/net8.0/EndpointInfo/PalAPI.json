@@ -310,7 +310,47 @@
         }
       }
     },
-    "/api/Bookings": {
+    "/api/Bookings/trip/{tripId}/vouchers": {
+      "get": {
+        "tags": [
+          "Bookings"
+        ],
+        "parameters": [
+          {
+            "name": "tripId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "seatCount",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "fullRide",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Bookings/quote": {
       "post": {
         "tags": [
           "Bookings"
@@ -319,17 +359,48 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateBookingDto"
+                "$ref": "#/components/schemas/BookingQuoteRequestDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateBookingDto"
+                "$ref": "#/components/schemas/BookingQuoteRequestDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateBookingDto"
+                "$ref": "#/components/schemas/BookingQuoteRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Bookings/confirm": {
+      "post": {
+        "tags": [
+          "Bookings"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmBookingDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmBookingDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmBookingDto"
               }
             }
           }
@@ -489,6 +560,58 @@
         }
       }
     },
+    "/api/Trips/search/history": {
+      "get": {
+        "tags": [
+          "Trips"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Trips"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchTripsDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchTripsDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchTripsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Trips/my-trips": {
       "get": {
         "tags": [
@@ -573,6 +696,27 @@
   },
   "components": {
     "schemas": {
+      "BookingQuoteRequestDto": {
+        "type": "object",
+        "properties": {
+          "tripId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "seatCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fullRide": {
+            "type": "boolean"
+          },
+          "voucherCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ChangePasswordDto": {
         "type": "object",
         "properties": {
@@ -591,7 +735,7 @@
         },
         "additionalProperties": false
       },
-      "CreateBookingDto": {
+      "ConfirmBookingDto": {
         "type": "object",
         "properties": {
           "tripId": {
@@ -601,6 +745,17 @@
           "seatCount": {
             "type": "integer",
             "format": "int32"
+          },
+          "fullRide": {
+            "type": "boolean"
+          },
+          "voucherCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -726,6 +881,25 @@
           },
           "newPassword": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SearchTripsDto": {
+        "type": "object",
+        "properties": {
+          "pickupLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "dropoffLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           }
         },

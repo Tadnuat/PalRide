@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PalRepository.DBContexts;
-using PalRepository.DTOs.PalRide.API.Models.DTOs;
+using PalService.DTOs;
 using PalRepository.Models;
 using PalRepository.PalRepository;
 using PalRepository.UnitOfWork;
@@ -14,94 +14,20 @@ namespace PalService
         private readonly UserRepository _userRepo;
         private readonly BookingRepository _bookingRepo;
         private readonly GenericRepository<Trip> _tripRepo;
+        private readonly GenericRepository<UserVoucher> _userVoucherRepo;
+        private readonly GenericRepository<Voucher> _voucherRepo;
 
-        public BookingService(PalRideContext context, UserRepository userRepo, BookingRepository bookingRepo, GenericRepository<Trip> tripRepo)
+        public BookingService(PalRideContext context, UserRepository userRepo, BookingRepository bookingRepo, GenericRepository<Trip> tripRepo, GenericRepository<UserVoucher> userVoucherRepo, GenericRepository<Voucher> voucherRepo)
         {
             _context = context;
             _userRepo = userRepo;
             _bookingRepo = bookingRepo;
             _tripRepo = tripRepo;
+            _userVoucherRepo = userVoucherRepo;
+            _voucherRepo = voucherRepo;
         }
 
-        public async Task<ResponseDto<BookingDto>> CreateBookingAsync(CreateBookingDto dto, int passengerId)
-        {
-            var response = new ResponseDto<BookingDto>();
-            try
-            {
-                // Check if trip exists and has available seats
-                var trip = await _tripRepo.GetByIdAsync(dto.TripId);
-                if (trip == null)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "Trip not found";
-                    return response;
-                }
-
-                if (trip.SeatAvailable < dto.SeatCount)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "Not enough seats available";
-                    return response;
-                }
-
-                if (trip.DriverId == passengerId)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "Cannot book your own trip";
-                    return response;
-                }
-
-                // Check if user already has a booking for this trip
-                var existingBooking = await _context.Bookings
-                    .FirstOrDefaultAsync(b => b.TripId == dto.TripId && b.PassengerId == passengerId);
-                
-                if (existingBooking != null)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "You already have a booking for this trip";
-                    return response;
-                }
-
-                // Create booking
-                var booking = new Booking
-                {
-                    TripId = dto.TripId,
-                    PassengerId = passengerId,
-                    SeatCount = (byte)dto.SeatCount,
-                    TotalPrice = dto.SeatCount * trip.PricePerSeat,
-                    Status = "Pending",
-                    BookingTime = DateTime.UtcNow
-                };
-
-                await _bookingRepo.CreateAsync(booking);
-
-                // Update trip available seats
-                trip.SeatAvailable -= (byte)dto.SeatCount;
-                await _tripRepo.UpdateAsync(trip);
-
-                // Get passenger name
-                var passenger = await _userRepo.GetByIdAsync(passengerId);
-
-                response.Result = new BookingDto
-                {
-                    BookingId = booking.BookingId,
-                    TripId = booking.TripId,
-                    PassengerId = booking.PassengerId,
-                    PassengerName = passenger?.FullName ?? "Unknown",
-                    SeatCount = booking.SeatCount,
-                    TotalPrice = booking.TotalPrice,
-                    Status = booking.Status,
-                    BookingTime = booking.BookingTime
-                };
-                response.Message = "Booking created successfully";
-            }
-            catch (Exception ex)
-            {
-                response.IsSuccess = false;
-                response.Message = ex.Message;
-            }
-            return response;
-        }
+        // Removed: CreateBookingAsync replaced by quote + confirm
 
         public async Task<ResponseDto<BookingDto>> AcceptBookingAsync(int bookingId, int driverId)
         {
@@ -291,6 +217,215 @@ namespace PalService
 
                 response.Result = bookingDtos;
                 response.Message = "Trip bookings retrieved successfully";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        private static decimal CalculateBasePrice(Trip trip, int seatCount, bool fullRide)
+        {
+            if (fullRide && trip.PriceFullRide.HasValue) return trip.PriceFullRide.Value;
+            return seatCount * trip.PricePerSeat;
+        }
+
+        private static decimal CalculateServiceFee(decimal basePrice)
+        {
+            // Simple 2% service fee
+            return Math.Round(basePrice * 0.02m, 0);
+        }
+
+        private static decimal ApplyDiscount(decimal basePrice, decimal serviceFee, Voucher voucher)
+        {
+            var subtotal = basePrice + serviceFee;
+            if (voucher.DiscountType == "Percent")
+                return Math.Round(subtotal * (voucher.DiscountValue / 100m), 0);
+            return Math.Min(voucher.DiscountValue, subtotal);
+        }
+
+        public async Task<ResponseDto<List<VoucherPreviewDto>>> GetApplicableVouchersAsync(int userId, int tripId, int seatCount, bool fullRide)
+        {
+            var response = new ResponseDto<List<VoucherPreviewDto>>();
+            try
+            {
+                var trip = await _tripRepo.GetByIdAsync(tripId) ?? throw new KeyNotFoundException("Trip not found");
+                var basePrice = CalculateBasePrice(trip, seatCount, fullRide);
+                var serviceFee = CalculateServiceFee(basePrice);
+
+                var userVouchers = await _context.UserVouchers
+                    .Include(uv => uv.Voucher)
+                    .Where(uv => uv.UserId == userId && !uv.IsUsed)
+                    .ToListAsync();
+
+                var result = new List<VoucherPreviewDto>();
+                foreach (var uv in userVouchers)
+                {
+                    var v = uv.Voucher;
+                    var subtotal = basePrice + serviceFee;
+                    var meetsMin = !v.MinOrderValue.HasValue || subtotal >= v.MinOrderValue.Value;
+                    var notExpired = !v.ExpiryDate.HasValue || v.ExpiryDate.Value.ToDateTime(TimeOnly.MinValue) >= DateTime.UtcNow.Date;
+                    var isApplicable = meetsMin && notExpired;
+
+                    var discount = isApplicable ? ApplyDiscount(basePrice, serviceFee, v) : 0m;
+                    result.Add(new VoucherPreviewDto
+                    {
+                        VoucherId = v.VoucherId,
+                        Code = v.Code,
+                        Description = v.Description ?? string.Empty,
+                        DiscountType = v.DiscountType,
+                        DiscountValue = v.DiscountValue,
+                        DiscountAmount = discount,
+                        IsApplicable = isApplicable
+                    });
+                }
+
+                response.Result = result
+                    .OrderByDescending(x => x.IsApplicable)
+                    .ThenByDescending(x => x.DiscountAmount)
+                    .ToList();
+                response.Message = "Vouchers retrieved";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseDto<BookingQuoteDto>> GetBookingQuoteAsync(int userId, BookingQuoteRequestDto dto)
+        {
+            var response = new ResponseDto<BookingQuoteDto>();
+            try
+            {
+                var trip = await _tripRepo.GetByIdAsync(dto.TripId) ?? throw new KeyNotFoundException("Trip not found");
+                var basePrice = CalculateBasePrice(trip, dto.SeatCount, dto.FullRide);
+                var serviceFee = CalculateServiceFee(basePrice);
+
+                decimal discount = 0m;
+                string? appliedCode = null;
+
+                if (!string.IsNullOrWhiteSpace(dto.VoucherCode))
+                {
+                    var uv = await _context.UserVouchers
+                        .Include(x => x.Voucher)
+                        .FirstOrDefaultAsync(x => x.UserId == userId && !x.IsUsed && x.Voucher.Code == dto.VoucherCode);
+
+                    if (uv?.Voucher != null)
+                    {
+                        var subtotal = basePrice + serviceFee;
+                        var meetsMin = !uv.Voucher.MinOrderValue.HasValue || subtotal >= uv.Voucher.MinOrderValue.Value;
+                        var notExpired = !uv.Voucher.ExpiryDate.HasValue || uv.Voucher.ExpiryDate.Value.ToDateTime(TimeOnly.MinValue) >= DateTime.UtcNow.Date;
+                        if (meetsMin && notExpired)
+                        {
+                            discount = ApplyDiscount(basePrice, serviceFee, uv.Voucher);
+                            appliedCode = uv.Voucher.Code;
+                        }
+                    }
+                }
+
+                response.Result = new BookingQuoteDto
+                {
+                    TripId = dto.TripId,
+                    SeatCount = dto.SeatCount,
+                    FullRide = dto.FullRide,
+                    BasePrice = basePrice,
+                    ServiceFee = serviceFee,
+                    VoucherDiscount = discount,
+                    TotalPrice = Math.Max(0, basePrice + serviceFee - discount),
+                    AppliedVoucherCode = appliedCode
+                };
+                response.Message = "Quote calculated";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseDto<BookingDto>> ConfirmBookingAsync(int userId, ConfirmBookingDto dto)
+        {
+            var response = new ResponseDto<BookingDto>();
+            try
+            {
+                var trip = await _tripRepo.GetByIdAsync(dto.TripId) ?? throw new KeyNotFoundException("Trip not found");
+                if (trip.SeatAvailable < dto.SeatCount)
+                    throw new InvalidOperationException("Not enough seats available");
+                if (trip.DriverId == userId)
+                    throw new InvalidOperationException("Cannot book your own trip");
+
+                var basePrice = CalculateBasePrice(trip, dto.SeatCount, dto.FullRide);
+                var serviceFee = CalculateServiceFee(basePrice);
+                decimal discount = 0m;
+
+                UserVoucher usedUv = null;
+                if (!string.IsNullOrWhiteSpace(dto.VoucherCode))
+                {
+                    usedUv = await _context.UserVouchers
+                        .Include(x => x.Voucher)
+                        .FirstOrDefaultAsync(x => x.UserId == userId && !x.IsUsed && x.Voucher.Code == dto.VoucherCode);
+                    if (usedUv?.Voucher != null)
+                    {
+                        var subtotal = basePrice + serviceFee;
+                        var meetsMin = !usedUv.Voucher.MinOrderValue.HasValue || subtotal >= usedUv.Voucher.MinOrderValue.Value;
+                        var notExpired = !usedUv.Voucher.ExpiryDate.HasValue || usedUv.Voucher.ExpiryDate.Value.ToDateTime(TimeOnly.MinValue) >= DateTime.UtcNow.Date;
+                        if (meetsMin && notExpired)
+                        {
+                            discount = ApplyDiscount(basePrice, serviceFee, usedUv.Voucher);
+                        }
+                        else
+                        {
+                            usedUv = null; // don't mark as used
+                        }
+                    }
+                }
+
+                var total = Math.Max(0, basePrice + serviceFee - discount);
+
+                var booking = new Booking
+                {
+                    TripId = dto.TripId,
+                    PassengerId = userId,
+                    SeatCount = (byte)dto.SeatCount,
+                    TotalPrice = total,
+                    Status = "Pending",
+                    BookingTime = DateTime.UtcNow
+                };
+
+                await _bookingRepo.CreateAsync(booking);
+
+                // reduce seats
+                trip.SeatAvailable -= (byte)dto.SeatCount;
+                await _tripRepo.UpdateAsync(trip);
+
+                // mark voucher used (server-side update to avoid tracking issues)
+                if (usedUv != null)
+                {
+                    await _context.UserVouchers
+                        .Where(x => x.UserVoucherId == usedUv.UserVoucherId)
+                        .ExecuteUpdateAsync(s => s
+                            .SetProperty(u => u.IsUsed, true)
+                            .SetProperty(u => u.UsedAt, DateTime.UtcNow));
+                }
+
+                var passenger = await _userRepo.GetByIdAsync(userId);
+                response.Result = new BookingDto
+                {
+                    BookingId = booking.BookingId,
+                    TripId = booking.TripId,
+                    PassengerId = booking.PassengerId,
+                    PassengerName = passenger?.FullName ?? "",
+                    SeatCount = booking.SeatCount,
+                    TotalPrice = booking.TotalPrice,
+                    Status = booking.Status,
+                    BookingTime = booking.BookingTime
+                };
+                response.Message = "Booking created";
             }
             catch (Exception ex)
             {

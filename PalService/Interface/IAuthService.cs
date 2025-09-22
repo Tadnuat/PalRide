@@ -1,5 +1,4 @@
-﻿using PalRepository.DTOs;
-using PalRepository.DTOs.PalRide.API.Models.DTOs;
+﻿using PalService.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

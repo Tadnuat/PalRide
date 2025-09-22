@@ -12,3 +12,18 @@ E:\EXE2\PalRide\PalRepository\obj\Debug\net8.0\refint\PalRepository.dll
 E:\EXE2\PalRide\PalRepository\obj\Debug\net8.0\PalRepository.pdb
 E:\EXE2\PalRide\PalRepository\obj\Debug\net8.0\PalRepository.genruntimeconfig.cache
 E:\EXE2\PalRide\PalRepository\obj\Debug\net8.0\ref\PalRepository.dll
+E:\Up GitHub\PalRide\PalRepository\bin\Debug\net8.0\PalRepository.deps.json
+E:\Up GitHub\PalRide\PalRepository\bin\Debug\net8.0\PalRepository.runtimeconfig.json
+E:\Up GitHub\PalRide\PalRepository\bin\Debug\net8.0\PalRepository.dll
+E:\Up GitHub\PalRide\PalRepository\bin\Debug\net8.0\PalRepository.pdb
+E:\Up GitHub\PalRide\PalRepository\obj\Debug\net8.0\PalRepository.csproj.AssemblyReference.cache
+E:\Up GitHub\PalRide\PalRepository\obj\Debug\net8.0\PalRepository.GeneratedMSBuildEditorConfig.editorconfig
+E:\Up GitHub\PalRide\PalRepository\obj\Debug\net8.0\PalRepository.AssemblyInfoInputs.cache
+E:\Up GitHub\PalRide\PalRepository\obj\Debug\net8.0\PalRepository.AssemblyInfo.cs
+E:\Up GitHub\PalRide\PalRepository\obj\Debug\net8.0\PalRepository.csproj.CoreCompileInputs.cache
+E:\Up GitHub\PalRide\PalRepository\obj\Debug\net8.0\PalRepository.sourcelink.json
+E:\Up GitHub\PalRide\PalRepository\obj\Debug\net8.0\PalRepository.dll
+E:\Up GitHub\PalRide\PalRepository\obj\Debug\net8.0\refint\PalRepository.dll
+E:\Up GitHub\PalRide\PalRepository\obj\Debug\net8.0\PalRepository.pdb
+E:\Up GitHub\PalRide\PalRepository\obj\Debug\net8.0\PalRepository.genruntimeconfig.cache
+E:\Up GitHub\PalRide\PalRepository\obj\Debug\net8.0\ref\PalRepository.dll

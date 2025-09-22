@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PalRepository.DTOs.PalRide.API.Models.DTOs;
+using PalService.DTOs;
 using PalService.Interface;
+using PalService.DTOs;
 using System.Security.Claims;
 
 namespace PalAPI.Controllers
@@ -39,6 +40,25 @@ namespace PalAPI.Controllers
             if (!result.IsSuccess)
                 return BadRequest(result);
             
+            return Ok(result);
+        }
+
+        // Search history APIs
+        [HttpGet("search/history")]
+        public async Task<IActionResult> GetSearchHistory([FromQuery] int limit = 5)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _tripService.GetSearchHistoryAsync(userId, limit);
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpPost("search/history")]
+        public async Task<IActionResult> SaveSearchHistory([FromBody] SearchTripsDto dto)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _tripService.SaveSearchHistoryAsync(userId, dto);
+            if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
 

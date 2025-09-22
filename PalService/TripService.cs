@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PalRepository.DBContexts;
-using PalRepository.DTOs.PalRide.API.Models.DTOs;
+using PalService.DTOs;
 using PalRepository.Models;
 using PalRepository.PalRepository;
 using PalRepository.UnitOfWork;
@@ -14,13 +14,22 @@ namespace PalService
         private readonly UserRepository _userRepo;
         private readonly GenericRepository<Trip> _tripRepo;
         private readonly GenericRepository<Vehicle> _vehicleRepo;
+        private readonly GenericRepository<Route> _routeRepo;
 
-        public TripService(PalRideContext context, UserRepository userRepo, GenericRepository<Trip> tripRepo, GenericRepository<Vehicle> vehicleRepo)
+        public TripService(PalRideContext context, UserRepository userRepo, GenericRepository<Trip> tripRepo, GenericRepository<Vehicle> vehicleRepo, GenericRepository<Route> routeRepo)
         {
             _context = context;
             _userRepo = userRepo;
             _tripRepo = tripRepo;
             _vehicleRepo = vehicleRepo;
+            _routeRepo = routeRepo;
+        }
+
+        private static string MaskPhone(string phone)
+        {
+            if (string.IsNullOrWhiteSpace(phone) || phone.Length < 4) return "";
+            var last4 = phone[^4..];
+            return new string('*', Math.Max(0, phone.Length - 4)) + last4;
         }
 
         public async Task<ResponseDto<TripDto>> CreateTripAsync(CreateTripDto dto, int driverId)
@@ -73,6 +82,9 @@ namespace PalService
 
                 // Get driver and vehicle info
                 var driver = await _userRepo.GetByIdAsync(driverId);
+                var reviewsCountCreate = driver != null
+                    ? await _context.Reviews.CountAsync(r => r.ToUserId == driver.UserId)
+                    : 0;
 
                 response.Result = new TripDto
                 {
@@ -99,6 +111,15 @@ namespace PalService
                         Color = vehicle.Color,
                         Type = vehicle.Type,
                         SeatCount = vehicle.SeatCount
+                    } : null,
+                    Driver = driver != null ? new DriverInfoDto
+                    {
+                        DriverId = driver.UserId,
+                        FullName = driver.FullName,
+                        PhoneNumberMasked = MaskPhone(driver.PhoneNumber),
+                        RatingAverage = driver.RatingAverage,
+                        ReviewsCount = reviewsCountCreate,
+                        GmailVerified = driver.GmailVerified
                     } : null
                 };
                 response.Message = "Trip created successfully";
@@ -145,6 +166,9 @@ namespace PalService
                 {
                     var driver = await _userRepo.GetByIdAsync(trip.DriverId);
                     var vehicle = trip.VehicleId.HasValue ? await _vehicleRepo.GetByIdAsync(trip.VehicleId.Value) : null;
+                    var reviewsCountList = driver != null
+                        ? await _context.Reviews.CountAsync(r => r.ToUserId == driver.UserId)
+                        : 0;
 
                     tripDtos.Add(new TripDto
                     {
@@ -171,6 +195,15 @@ namespace PalService
                             Color = vehicle.Color,
                             Type = vehicle.Type,
                             SeatCount = vehicle.SeatCount
+                        } : null,
+                        Driver = driver != null ? new DriverInfoDto
+                        {
+                            DriverId = driver.UserId,
+                            FullName = driver.FullName,
+                            PhoneNumberMasked = MaskPhone(driver.PhoneNumber),
+                            RatingAverage = driver.RatingAverage,
+                            ReviewsCount = reviewsCountList,
+                            GmailVerified = driver.GmailVerified
                         } : null
                     });
                 }
@@ -257,6 +290,9 @@ namespace PalService
 
                 var driver = await _userRepo.GetByIdAsync(trip.DriverId);
                 var vehicle = trip.VehicleId.HasValue ? await _vehicleRepo.GetByIdAsync(trip.VehicleId.Value) : null;
+                var reviewsCountDetail = driver != null
+                    ? await _context.Reviews.CountAsync(r => r.ToUserId == driver.UserId)
+                    : 0;
 
                 response.Result = new TripDto
                 {
@@ -283,6 +319,15 @@ namespace PalService
                         Color = vehicle.Color,
                         Type = vehicle.Type,
                         SeatCount = vehicle.SeatCount
+                    } : null,
+                    Driver = driver != null ? new DriverInfoDto
+                    {
+                        DriverId = driver.UserId,
+                        FullName = driver.FullName,
+                        PhoneNumberMasked = MaskPhone(driver.PhoneNumber),
+                        RatingAverage = driver.RatingAverage,
+                        ReviewsCount = reviewsCountDetail,
+                        GmailVerified = driver.GmailVerified
                     } : null
                 };
                 response.Message = "Trip retrieved successfully";
@@ -364,6 +409,80 @@ namespace PalService
 
                 response.Result = true;
                 response.Message = "Trip completed successfully";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseDto<List<SearchHistoryItemDto>>> GetSearchHistoryAsync(int userId, int limit = 5)
+        {
+            var response = new ResponseDto<List<SearchHistoryItemDto>>();
+            try
+            {
+                var routes = await _context.Routes
+                    .Where(r => r.UserId == userId)
+                    .OrderByDescending(r => r.CreatedAt)
+                    .Take(limit)
+                    .ToListAsync();
+
+                response.Result = routes.Select(r => new SearchHistoryItemDto
+                {
+                    Id = r.RouteId,
+                    PickupLocation = r.PickupLocation,
+                    DropoffLocation = r.DropoffLocation,
+                    CreatedAt = r.CreatedAt
+                }).ToList();
+                response.Message = "Search history retrieved successfully";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseDto<bool>> SaveSearchHistoryAsync(int userId, SearchTripsDto dto)
+        {
+            var response = new ResponseDto<bool>();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(dto.PickupLocation) || string.IsNullOrWhiteSpace(dto.DropoffLocation))
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Pickup and dropoff are required";
+                    return response;
+                }
+
+                // Optional: deduplicate recent identical entry
+                var last = await _context.Routes
+                    .Where(r => r.UserId == userId)
+                    .OrderByDescending(r => r.CreatedAt)
+                    .FirstOrDefaultAsync();
+
+                if (last != null && last.PickupLocation == dto.PickupLocation && last.DropoffLocation == dto.DropoffLocation)
+                {
+                    response.Result = true;
+                    response.Message = "Search history already up to date";
+                    return response;
+                }
+
+                var route = new Route
+                {
+                    UserId = userId,
+                    PickupLocation = dto.PickupLocation!,
+                    DropoffLocation = dto.DropoffLocation!,
+                    IsRoundTrip = false,
+                    CreatedAt = DateTime.UtcNow
+                };
+                await _routeRepo.CreateAsync(route);
+
+                response.Result = true;
+                response.Message = "Search saved";
             }
             catch (Exception ex)
             {

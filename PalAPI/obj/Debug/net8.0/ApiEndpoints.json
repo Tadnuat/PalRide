@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "PalRepository.DTOs.ChangePasswordDto",
+        "Type": "PalService.DTOs.ChangePasswordDto",
         "IsRequired": true
       }
     ],
@@ -41,7 +41,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "PalRepository.DTOs.ForgotPasswordDto",
+        "Type": "PalService.DTOs.ForgotPasswordDto",
         "IsRequired": true
       }
     ],
@@ -57,7 +57,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "PalRepository.DTOs.PalRide.API.Models.DTOs.GoogleLoginDto",
+        "Type": "PalService.DTOs.GoogleLoginDto",
         "IsRequired": true
       }
     ],
@@ -83,7 +83,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "PalRepository.DTOs.PalRide.API.Models.DTOs.LoginDto",
+        "Type": "PalService.DTOs.LoginDto",
         "IsRequired": true
       }
     ],
@@ -99,7 +99,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "PalRepository.DTOs.RegisterDto",
+        "Type": "PalService.DTOs.RegisterDto",
         "IsRequired": true
       }
     ],
@@ -115,7 +115,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "PalRepository.DTOs.ResetPasswordDto",
+        "Type": "PalService.DTOs.ResetPasswordDto",
         "IsRequired": true
       }
     ],
@@ -146,7 +146,7 @@
       },
       {
         "Name": "dto",
-        "Type": "PalRepository.DTOs.UpdateUserDto",
+        "Type": "PalService.DTOs.UpdateUserDto",
         "IsRequired": true
       }
     ],
@@ -162,23 +162,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "PalRepository.DTOs.VerifyOtpDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PalAPI.Controllers.BookingsController",
-    "Method": "CreateBooking",
-    "RelativePath": "api/Bookings",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "PalRepository.DTOs.PalRide.API.Models.DTOs.CreateBookingDto",
+        "Type": "PalService.DTOs.VerifyOtpDto",
         "IsRequired": true
       }
     ],
@@ -218,12 +202,44 @@
   },
   {
     "ContainingType": "PalAPI.Controllers.BookingsController",
+    "Method": "Confirm",
+    "RelativePath": "api/Bookings/confirm",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.ConfirmBookingDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.BookingsController",
     "Method": "GetMyBookings",
     "RelativePath": "api/Bookings/my-bookings",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.BookingsController",
+    "Method": "GetQuote",
+    "RelativePath": "api/Bookings/quote",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.BookingQuoteRequestDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -243,6 +259,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "PalAPI.Controllers.BookingsController",
+    "Method": "GetApplicableVouchers",
+    "RelativePath": "api/Bookings/trip/{tripId}/vouchers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tripId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "seatCount",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "fullRide",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "PalAPI.Controllers.TripsController",
     "Method": "CreateTrip",
     "RelativePath": "api/Trips",
@@ -252,7 +294,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "PalRepository.DTOs.PalRide.API.Models.DTOs.CreateTripDto",
+        "Type": "PalService.DTOs.CreateTripDto",
         "IsRequired": true
       }
     ],
@@ -338,6 +380,38 @@
         "Name": "StartDate",
         "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.TripsController",
+    "Method": "GetSearchHistory",
+    "RelativePath": "api/Trips/search/history",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "limit",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.TripsController",
+    "Method": "SaveSearchHistory",
+    "RelativePath": "api/Trips/search/history",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.SearchTripsDto",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

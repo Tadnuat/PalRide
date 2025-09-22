@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PalRepository.DTOs;
-using PalRepository.DTOs.PalRide.API.Models.DTOs;
+using PalService.DTOs;
 using PalService.Interface;
 using System.Security.Claims;
+using PalService.DTOs;
 
 namespace PalAPI.Controllers
 {
@@ -19,18 +19,35 @@ namespace PalAPI.Controllers
             _bookingService = bookingService;
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Passenger,Both")]
-        public async Task<IActionResult> CreateBooking(CreateBookingDto dto)
+        // Pre-booking flow
+        [HttpGet("trip/{tripId}/vouchers")]
+        public async Task<IActionResult> GetApplicableVouchers(int tripId, [FromQuery] int seatCount = 1, [FromQuery] bool fullRide = false)
         {
-            var passengerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var result = await _bookingService.CreateBookingAsync(dto, passengerId);
-            
-            if (!result.IsSuccess)
-                return BadRequest(result);
-            
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _bookingService.GetApplicableVouchersAsync(userId, tripId, seatCount, fullRide);
+            if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
+
+        [HttpPost("quote")]
+        public async Task<IActionResult> GetQuote([FromBody] BookingQuoteRequestDto dto)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _bookingService.GetBookingQuoteAsync(userId, dto);
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpPost("confirm")]
+        public async Task<IActionResult> Confirm([FromBody] ConfirmBookingDto dto)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _bookingService.ConfirmBookingAsync(userId, dto);
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok(result);
+        }
+
+        // Old CreateBooking removed in favor of quote + confirm
 
         [HttpPut("{bookingId}/accept")]
         [Authorize(Roles = "Driver,Both")]

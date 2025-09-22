@@ -3614,11 +3614,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\EXE2\\PalRide\\PalAPI\\PalAPI.csproj",
+      "projectUniqueName": "E:\\Up GitHub\\PalRide\\PalAPI\\PalAPI.csproj",
       "projectName": "PalAPI",
-      "projectPath": "E:\\EXE2\\PalRide\\PalAPI\\PalAPI.csproj",
+      "projectPath": "E:\\Up GitHub\\PalRide\\PalAPI\\PalAPI.csproj",
       "packagesPath": "C:\\Users\\TGC\\.nuget\\packages\\",
-      "outputPath": "E:\\EXE2\\PalRide\\PalAPI\\obj\\",
+      "outputPath": "E:\\Up GitHub\\PalRide\\PalAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\VS 2\\NuGetPackages"
@@ -3640,8 +3640,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "E:\\EXE2\\PalRide\\PalService\\PalService.csproj": {
-              "projectPath": "E:\\EXE2\\PalRide\\PalService\\PalService.csproj"
+            "E:\\Up GitHub\\PalRide\\PalService\\PalService.csproj": {
+              "projectPath": "E:\\Up GitHub\\PalRide\\PalService\\PalService.csproj"
             }
           }
         }

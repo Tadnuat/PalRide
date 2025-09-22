@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EkVHeQ4HODE=",
+  "dgSpecHash": "TGSx+dCloLY=",
   "success": true,
-  "projectFilePath": "E:\\EXE2\\PalRide\\PalAPI\\PalAPI.csproj",
+  "projectFilePath": "E:\\Up GitHub\\PalRide\\PalAPI\\PalAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\TGC\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\TGC\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
