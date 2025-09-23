@@ -29,15 +29,15 @@ public partial class User
 
     public bool GmailVerified { get; set; }
 
-    public string NationalId { get; set; }
-
-    public bool NationalIdVerified { get; set; }
+    public string Introduce { get; set; }
 
     public bool PhoneVerified { get; set; }
 
     public decimal RatingAverage { get; set; }
 
     public bool IsActive { get; set; }
+
+    public bool IsVip { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

@@ -9,7 +9,7 @@ namespace PalService.Interface
 {
     public interface IAuthService
     {
-        Task<AuthResponseDto> LoginAsync(LoginDto dto);
+        Task<AuthResponseDto> LoginAsync(LoginDtos dto);
         Task<AuthResponseDto> LoginWithGoogleAsync(GoogleLoginDto dto);
         Task<AuthResponseDto> RegisterAsync(RegisterDto dto);
         Task<AuthResponseDto> VerifyOtpAsync(VerifyOtpDto dto);
@@ -18,5 +18,6 @@ namespace PalService.Interface
         Task<ResponseDto<bool>> ForgotPasswordAsync(ForgotPasswordDto dto);
         Task<ResponseDto<bool>> ResetPasswordAsync(ResetPasswordDto dto);
         Task<ResponseDto<bool>> ChangePasswordAsync(ChangePasswordDto dto);
+        Task<ResponseDto<UserDto>> GetProfileAsync(int userId);
     }
 }

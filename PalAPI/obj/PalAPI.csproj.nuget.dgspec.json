@@ -235,6 +235,10 @@
             "Google.Apis.Auth": {
               "target": "Package",
               "version": "[1.71.0, )"
+            },
+            "Microsoft.Extensions.Http": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             }
           },
           "imports": [

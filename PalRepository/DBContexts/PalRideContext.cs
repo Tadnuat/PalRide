@@ -338,7 +338,8 @@ public partial class PalRideContext : DbContext
                 .HasMaxLength(100);
             entity.Property(e => e.Gender).HasMaxLength(10);
             entity.Property(e => e.IsActive).HasDefaultValue(true);
-            entity.Property(e => e.NationalId).HasMaxLength(20);
+            entity.Property(e => e.IsVip).HasDefaultValue(false);
+            entity.Property(e => e.Introduce).HasMaxLength(500);
             entity.Property(e => e.PasswordHash)
                 .IsRequired()
                 .HasMaxLength(255);

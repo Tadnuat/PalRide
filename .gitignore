@@ -1,0 +1,85 @@
+# ---- General ----
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ---- IDE settings ----
+.vs/
+.idea/
+.vscode/
+
+# ---- User-specific files ----
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ---- Build results ----
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+*.log
+artifacts/
+
+# ---- .NET / C# intermediates ----
+project.lock.json
+project.fragment.lock.json
+*_i.c
+*_p.c
+*_i.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlh
+*.tli
+*.tmp
+*.tmp_proj
+*.vspscc
+_Binaries/
+_Builds/
+_ReSharper*/
+
+# ---- Test / Coverage ----
+[Tt]est[Rr]esult*/
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+.coverage
+.coverage.*
+
+# ---- NuGet ----
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+.nuget/
+# ---- Publish profiles ----
+PublishProfiles/
+*.pubxml
+*.publishproj
+
+# ---- Rider / ReSharper caches ----
+_ReSharper.Caches/
+
+# ---- Misc / backups ----
+*.bak
+*.bak2
+*.orig
+*.rej
+*.swp
+*.swo
+ehthumbs.db
+
+

@@ -32,7 +32,7 @@ namespace PalService
             _tokenRepo = tokenRepo;
         }
 
-        public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
+        public async Task<AuthResponseDto> LoginAsync(LoginDtos dto)
         {
             var user = _userRepo.GetByEmail(dto.Email);
             if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
@@ -166,6 +166,11 @@ namespace PalService
                 user.PhoneNumber = dto.PhoneNumber;
                 user.Role = dto.Role;
                 user.IsActive = dto.IsActive;
+                user.Introduce = dto.Introduce;
+                user.University = dto.University;
+                user.StudentId = dto.StudentId;
+                user.DateOfBirth = dto.DateOfBirth.HasValue ? DateOnly.FromDateTime(dto.DateOfBirth.Value.Date) : null;
+                user.Gender = dto.Gender;
                 await _userRepo.UpdateAsync(user);
 
                 response.Result = new UserDto
@@ -175,7 +180,12 @@ namespace PalService
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     Role = user.Role,
-                    IsActive = user.IsActive
+                    IsActive = user.IsActive,
+                    Introduce = user.Introduce,
+                    University = user.University,
+                    StudentId = user.StudentId,
+                    DateOfBirth = user.DateOfBirth?.ToDateTime(TimeOnly.MinValue),
+                    Gender = user.Gender
                 };
                 response.Message = "User updated successfully";
             }
@@ -281,6 +291,36 @@ namespace PalService
             return response;
         }
 
+        public async Task<ResponseDto<UserDto>> GetProfileAsync(int userId)
+        {
+            var response = new ResponseDto<UserDto>();
+            try
+            {
+                var user = await _userRepo.GetByIdAsync(userId) ?? throw new KeyNotFoundException("User not found");
+                response.Result = new UserDto
+                {
+                    UserId = user.UserId,
+                    FullName = user.FullName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    Role = user.Role,
+                    IsActive = user.IsActive,
+                    Introduce = user.Introduce,
+                    University = user.University,
+                    StudentId = user.StudentId,
+                    DateOfBirth = user.DateOfBirth?.ToDateTime(TimeOnly.MinValue),
+                    Gender = user.Gender
+                };
+                response.Message = "Profile retrieved";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
 
 
         private async Task<AuthResponseDto> GenerateTokensAsync(User user)
@@ -299,7 +339,7 @@ namespace PalService
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: creds
             );
 

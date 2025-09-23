@@ -15,9 +15,14 @@ namespace PalService.DTOs
         public string PhoneNumber { get; set; }
         public string Role { get; set; }
         public bool IsActive { get; set; }
+        public string Introduce { get; set; }
+        public string University { get; set; }
+        public string StudentId { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string Gender { get; set; }
     }
 
-    public class LoginDto
+    public class LoginDtos
     {
         public string Email { get; set; }
         public string Password { get; set; }
@@ -66,6 +71,11 @@ namespace PalService.DTOs
         public string PhoneNumber { get; set; }
         public string Role { get; set; }
         public bool IsActive { get; set; }
+        public string Introduce { get; set; }
+        public string University { get; set; }
+        public string StudentId { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string Gender { get; set; }
     }
 
     public class ForgotPasswordDto
@@ -87,5 +97,6 @@ namespace PalService.DTOs
         public string NewPassword { get; set; }
     }
 }
+
 
 

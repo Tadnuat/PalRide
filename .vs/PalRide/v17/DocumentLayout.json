@@ -3,11 +3,27 @@
   "WorkspaceRootPath": "E:\\Up GitHub\\PalRide\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|e:\\up github\\palride\\palapi\\controllers\\tripscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|solutionrelative:palapi\\controllers\\tripscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\up github\\palride\\palservice\\interface\\itripservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\interface\\itripservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\up github\\palride\\palservice\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/DESKTOP_8O97R1M_SQLEXPRESS/PalRide/sa/SqlTable/dbo.Route.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Up GitHub\\PalRide\\PalService\\DTOs\\BookingDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:PalService\\DTOs\\BookingDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Up GitHub\\PalRide\\PalService\\DTOs\\LoginDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:PalService\\DTOs\\LoginDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,6 +38,55 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "TripsController.cs",
+              "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalAPI\\Controllers\\TripsController.cs",
+              "RelativeDocumentMoniker": "PalAPI\\Controllers\\TripsController.cs",
+              "ToolTip": "E:\\Up GitHub\\PalRide\\PalAPI\\Controllers\\TripsController.cs",
+              "RelativeToolTip": "PalAPI\\Controllers\\TripsController.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAAABUAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T16:35:07.844Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BookingDto.cs",
+              "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalService\\DTOs\\BookingDto.cs",
+              "RelativeDocumentMoniker": "PalService\\DTOs\\BookingDto.cs",
+              "ToolTip": "E:\\Up GitHub\\PalRide\\PalService\\DTOs\\BookingDto.cs",
+              "RelativeToolTip": "PalService\\DTOs\\BookingDto.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAApwEsAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T16:34:05.138Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalService\\DTOs\\LoginDto.cs",
+              "RelativeDocumentMoniker": "PalService\\DTOs\\LoginDto.cs",
+              "ToolTip": "E:\\Up GitHub\\PalRide\\PalService\\DTOs\\LoginDto.cs",
+              "RelativeToolTip": "PalService\\DTOs\\LoginDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T16:34:04.388Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ITripService.cs",
+              "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalService\\Interface\\ITripService.cs",
+              "RelativeDocumentMoniker": "PalService\\Interface\\ITripService.cs",
+              "ToolTip": "E:\\Up GitHub\\PalRide\\PalService\\Interface\\ITripService.cs",
+              "RelativeToolTip": "PalService\\Interface\\ITripService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T16:33:51.497Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "BookingService.cs",
               "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalService\\BookingService.cs",
               "RelativeDocumentMoniker": "PalService\\BookingService.cs",
@@ -29,18 +94,16 @@
               "RelativeToolTip": "PalService\\BookingService.cs",
               "ViewState": "AgIAAIwBAAAAAAAAAAAQwG8BAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T16:41:54.983Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-22T16:41:54.983Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "dbo.Route [Data]",
+              "DocumentIndex": 3,
+              "Title": "dbo.Route.sql",
               "DocumentMoniker": "ViewDataWindow_MSSQL__/DESKTOP_8O97R1M_SQLEXPRESS/PalRide/sa/SqlTable/dbo.Route.sql",
-              "ToolTip": "dbo.Route [Data]",
+              "ToolTip": "ViewDataWindow_MSSQL__/DESKTOP_8O97R1M_SQLEXPRESS/PalRide/sa/SqlTable/dbo.Route.sql",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-09-22T16:40:21.291Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-22T16:40:21.291Z"
             }
           ]
         }

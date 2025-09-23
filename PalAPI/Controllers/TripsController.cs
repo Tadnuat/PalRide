@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PalService.DTOs;
 using PalService.Interface;
-using PalService.DTOs;
 using System.Security.Claims;
 
 namespace PalAPI.Controllers
@@ -43,21 +42,49 @@ namespace PalAPI.Controllers
             return Ok(result);
         }
 
-        // Search history APIs
-        [HttpGet("search/history")]
-        public async Task<IActionResult> GetSearchHistory([FromQuery] int limit = 5)
+        [HttpGet("requests")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPassengerRequests()
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var result = await _tripService.GetSearchHistoryAsync(userId, limit);
+            var result = await _tripService.SearchPassengerRequestsAsync(new SearchTripsDto());
             if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
 
-        [HttpPost("search/history")]
-        public async Task<IActionResult> SaveSearchHistory([FromBody] SearchTripsDto dto)
+        [HttpGet("requests/search")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SearchPassengerRequests([FromQuery] SearchTripsDto dto)
+        {
+            var result = await _tripService.SearchPassengerRequestsFilteredAsync(dto);
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpGet("price-range")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPriceRange([FromQuery] string pickup, [FromQuery] string dropoff)
+        {
+            var result = await _tripService.GetPriceRangeAsync(pickup, dropoff);
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpPost("request")]
+        [Authorize(Roles = "Passenger,Both")]
+        public async Task<IActionResult> CreatePassengerRequest(CreatePassengerRequestDto dto)
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var result = await _tripService.SaveSearchHistoryAsync(userId, dto);
+            var result = await _tripService.CreatePassengerRequestAsync(userId, dto);
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpPut("request/{tripId}/withdraw")]
+        [Authorize(Roles = "Passenger,Both")]
+        public async Task<IActionResult> WithdrawPassengerRequest(int tripId)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _tripService.WithdrawPassengerRequestAsync(userId, tripId);
             if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }

@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "PalAPI.Controllers.AdminAuthController",
+    "Method": "Login",
+    "RelativePath": "api/admin/auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.LoginDtos",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "PalAPI.Controllers.AuthController",
     "Method": "ChangePassword",
     "RelativePath": "api/Auth/change-password",
@@ -83,10 +99,20 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "PalService.DTOs.LoginDto",
+        "Type": "PalService.DTOs.LoginDtos",
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.AuthController",
+    "Method": "GetProfile",
+    "RelativePath": "api/Auth/profile",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -360,6 +386,95 @@
   },
   {
     "ContainingType": "PalAPI.Controllers.TripsController",
+    "Method": "GetPriceRange",
+    "RelativePath": "api/Trips/price-range",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pickup",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "dropoff",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.TripsController",
+    "Method": "CreatePassengerRequest",
+    "RelativePath": "api/Trips/request",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.CreatePassengerRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.TripsController",
+    "Method": "WithdrawPassengerRequest",
+    "RelativePath": "api/Trips/request/{tripId}/withdraw",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tripId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.TripsController",
+    "Method": "GetPassengerRequests",
+    "RelativePath": "api/Trips/requests",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.TripsController",
+    "Method": "SearchPassengerRequests",
+    "RelativePath": "api/Trips/requests/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "PickupLocation",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "DropoffLocation",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "StartDate",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.TripsController",
     "Method": "SearchTrips",
     "RelativePath": "api/Trips/search",
     "HttpMethod": "GET",
@@ -385,32 +500,84 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "PalAPI.Controllers.TripsController",
-    "Method": "GetSearchHistory",
-    "RelativePath": "api/Trips/search/history",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "limit",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PalAPI.Controllers.TripsController",
-    "Method": "SaveSearchHistory",
-    "RelativePath": "api/Trips/search/history",
+    "ContainingType": "PalAPI.Controllers.VehiclesController",
+    "Method": "AddVehicle",
+    "RelativePath": "api/Vehicles",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "PalService.DTOs.SearchTripsDto",
+        "Type": "PalService.DTOs.AddVehicleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.VehiclesController",
+    "Method": "UpdateVehicle",
+    "RelativePath": "api/Vehicles/{vehicleId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "vehicleId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.UpdateVehicleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.VehiclesController",
+    "Method": "VerifyVehicle",
+    "RelativePath": "api/Vehicles/{vehicleId}/verify",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "vehicleId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.VerifyVehicleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.VehiclesController",
+    "Method": "GetMyVehicles",
+    "RelativePath": "api/Vehicles/my",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.VouchersController",
+    "Method": "Create",
+    "RelativePath": "api/Vouchers",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.CreateVoucherDto",
         "IsRequired": true
       }
     ],

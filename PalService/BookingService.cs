@@ -267,7 +267,8 @@ namespace PalService
                     var subtotal = basePrice + serviceFee;
                     var meetsMin = !v.MinOrderValue.HasValue || subtotal >= v.MinOrderValue.Value;
                     var notExpired = !v.ExpiryDate.HasValue || v.ExpiryDate.Value.ToDateTime(TimeOnly.MinValue) >= DateTime.UtcNow.Date;
-                    var isApplicable = meetsMin && notExpired;
+                    var hasQuota = !v.UsageLimit.HasValue || v.UsageLimit.Value > 0;
+                    var isApplicable = meetsMin && notExpired && hasQuota;
 
                     var discount = isApplicable ? ApplyDiscount(basePrice, serviceFee, v) : 0m;
                     result.Add(new VoucherPreviewDto
@@ -319,7 +320,8 @@ namespace PalService
                         var subtotal = basePrice + serviceFee;
                         var meetsMin = !uv.Voucher.MinOrderValue.HasValue || subtotal >= uv.Voucher.MinOrderValue.Value;
                         var notExpired = !uv.Voucher.ExpiryDate.HasValue || uv.Voucher.ExpiryDate.Value.ToDateTime(TimeOnly.MinValue) >= DateTime.UtcNow.Date;
-                        if (meetsMin && notExpired)
+                        var hasQuota = !uv.Voucher.UsageLimit.HasValue || uv.Voucher.UsageLimit.Value > 0;
+                        if (meetsMin && notExpired && hasQuota)
                         {
                             discount = ApplyDiscount(basePrice, serviceFee, uv.Voucher);
                             appliedCode = uv.Voucher.Code;
@@ -374,9 +376,29 @@ namespace PalService
                         var subtotal = basePrice + serviceFee;
                         var meetsMin = !usedUv.Voucher.MinOrderValue.HasValue || subtotal >= usedUv.Voucher.MinOrderValue.Value;
                         var notExpired = !usedUv.Voucher.ExpiryDate.HasValue || usedUv.Voucher.ExpiryDate.Value.ToDateTime(TimeOnly.MinValue) >= DateTime.UtcNow.Date;
-                        if (meetsMin && notExpired)
+                        var hasQuota = !usedUv.Voucher.UsageLimit.HasValue || usedUv.Voucher.UsageLimit.Value > 0;
+                        if (meetsMin && notExpired && hasQuota)
                         {
-                            discount = ApplyDiscount(basePrice, serviceFee, usedUv.Voucher);
+                            // For limited vouchers, decrement usage atomically first
+                            if (usedUv.Voucher.UsageLimit.HasValue)
+                            {
+                                var rows = await _context.Vouchers
+                                    .Where(v => v.VoucherId == usedUv.VoucherId && v.UsageLimit.HasValue && v.UsageLimit.Value > 0)
+                                    .ExecuteUpdateAsync(s => s.SetProperty(v => v.UsageLimit, v => v.UsageLimit - 1));
+                                if (rows == 0)
+                                {
+                                    usedUv = null;
+                                }
+                                else
+                                {
+                                    discount = ApplyDiscount(basePrice, serviceFee, usedUv.Voucher);
+                                }
+                            }
+                            else
+                            {
+                                // Unlimited voucher
+                                discount = ApplyDiscount(basePrice, serviceFee, usedUv.Voucher);
+                            }
                         }
                         else
                         {

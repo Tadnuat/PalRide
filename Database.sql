@@ -415,3 +415,48 @@ VALUES
 (1, 'RESET_TOKEN_ABC123', DATEADD(HOUR, 1, SYSDATETIME()), 0),
 (2, 'RESET_TOKEN_DEF456', DATEADD(HOUR, 1, SYSDATETIME()), 0);
 GO
+
+SET IDENTITY_INSERT [User] ON;
+
+INSERT INTO [User] (
+    UserId,
+    FullName,
+    Email,
+    PhoneNumber,
+    PasswordHash,
+    Role,
+    Gender,
+    DateOfBirth,
+    StudentId,
+    University,
+    GmailVerified,
+    NationalId,
+    NationalIdVerified,
+    PhoneVerified,
+    RatingAverage,
+    IsActive,
+    CreatedAt,
+    UpdatedAt
+)
+VALUES (
+    0, -- ép ID = 0
+    N'Default User',
+    'default@palride.local',
+    '0000000000',
+    'HASHED_PASSWORD_DEFAULT',
+    'Passenger',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0,
+    NULL,
+    0,
+    0,
+    0.00,
+    1,
+    SYSDATETIME(),
+    NULL
+);
+
+SET IDENTITY_INSERT [User] OFF;

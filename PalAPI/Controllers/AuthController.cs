@@ -17,7 +17,7 @@ namespace PalAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto dto)
+        public async Task<IActionResult> Login(LoginDtos dto)
             => Ok(await _authService.LoginAsync(dto));
 
         [AllowAnonymous]
@@ -71,6 +71,14 @@ namespace PalAPI.Controllers
             [HttpPost("change-password")]
             public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
                 => Ok(await _authService.ChangePasswordAsync(dto));
+
+            [HttpGet("profile")]
+            [Authorize]
+            public async Task<IActionResult> GetProfile()
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                return Ok(await _authService.GetProfileAsync(userId));
+            }
 
             [HttpGet("test-roles")]
             [Authorize]
