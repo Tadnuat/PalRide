@@ -19,5 +19,6 @@ namespace PalService.Interface
         Task<ResponseDto<bool>> ResetPasswordAsync(ResetPasswordDto dto);
         Task<ResponseDto<bool>> ChangePasswordAsync(ChangePasswordDto dto);
         Task<ResponseDto<UserDto>> GetProfileAsync(int userId);
+        Task<ResponseDto<bool>> SetUserActiveAsync(int userId, bool isActive);
     }
 }

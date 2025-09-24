@@ -51,11 +51,8 @@ namespace PalService.DTOs
 
     public class RegisterDto
     {
-        public string FullName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Role { get; set; } = "Both";
     }
 
     public class VerifyOtpDto
@@ -70,7 +67,6 @@ namespace PalService.DTOs
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Role { get; set; }
-        public bool IsActive { get; set; }
         public string Introduce { get; set; }
         public string University { get; set; }
         public string StudentId { get; set; }
@@ -95,6 +91,11 @@ namespace PalService.DTOs
         public string Email { get; set; }
         public string CurrentPassword { get; set; }
         public string NewPassword { get; set; }
+    }
+
+    public class SetActiveDto
+    {
+        public bool IsActive { get; set; }
     }
 }
 

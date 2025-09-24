@@ -60,6 +60,11 @@ namespace PalAPI.Controllers
         public async Task<IActionResult> DeleteUser(string email)
             => Ok(await _authService.DeleteUserAsync(email));
 
+        [Authorize]
+        [HttpPut("{userId}/active")]
+        public async Task<IActionResult> SetActive(int userId, [FromBody] SetActiveDto dto)
+            => Ok(await _authService.SetUserActiveAsync(userId, dto.IsActive));
+
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDto dto)
             => Ok(await _authService.ForgotPasswordAsync(dto));

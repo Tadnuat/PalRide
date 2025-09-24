@@ -17,6 +17,27 @@
   },
   {
     "ContainingType": "PalAPI.Controllers.AuthController",
+    "Method": "SetActive",
+    "RelativePath": "api/Auth/{userId}/active",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.SetActiveDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.AuthController",
     "Method": "ChangePassword",
     "RelativePath": "api/Auth/change-password",
     "HttpMethod": "POST",

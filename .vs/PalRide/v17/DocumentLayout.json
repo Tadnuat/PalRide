@@ -3,6 +3,21 @@
   "WorkspaceRootPath": "E:\\Up GitHub\\PalRide\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/DESKTOP_8O97R1M_SQLEXPRESS/PalRide/sa/SqlTable/dbo.User.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|e:\\up github\\palride\\palservice\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E38A60BD-6223-47AA-BEDD-E046490AEA45}|PalService\\PalService.csproj|solutionrelative:palservice\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|e:\\up github\\palride\\palapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|solutionrelative:palapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|e:\\up github\\palride\\palapi\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|solutionrelative:palapi\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|e:\\up github\\palride\\palapi\\controllers\\tripscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{079EA29A-2F0A-41D9-88E5-2F5CF53F4385}|PalAPI\\PalAPI.csproj|solutionrelative:palapi\\controllers\\tripscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -38,6 +53,55 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "dbo.User [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/DESKTOP_8O97R1M_SQLEXPRESS/PalRide/sa/SqlTable/dbo.User.sql",
+              "ToolTip": "dbo.User [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-09-24T14:29:31.016Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalService\\AuthService.cs",
+              "RelativeDocumentMoniker": "PalService\\AuthService.cs",
+              "ToolTip": "E:\\Up GitHub\\PalRide\\PalService\\AuthService.cs",
+              "RelativeToolTip": "PalService\\AuthService.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAwwGYAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-24T14:28:58.124Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "BookingsController.cs",
+              "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalAPI\\Controllers\\BookingsController.cs",
+              "RelativeDocumentMoniker": "PalAPI\\Controllers\\BookingsController.cs",
+              "ToolTip": "E:\\Up GitHub\\PalRide\\PalAPI\\Controllers\\BookingsController.cs",
+              "RelativeToolTip": "PalAPI\\Controllers\\BookingsController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-24T14:28:38.374Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalAPI\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "PalAPI\\Controllers\\AuthController.cs",
+              "ToolTip": "E:\\Up GitHub\\PalRide\\PalAPI\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "PalAPI\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAcwDYAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-24T14:20:14.878Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "TripsController.cs",
               "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalAPI\\Controllers\\TripsController.cs",
               "RelativeDocumentMoniker": "PalAPI\\Controllers\\TripsController.cs",
@@ -50,7 +114,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "BookingDto.cs",
               "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalService\\DTOs\\BookingDto.cs",
               "RelativeDocumentMoniker": "PalService\\DTOs\\BookingDto.cs",
@@ -62,7 +126,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "LoginDto.cs",
               "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalService\\DTOs\\LoginDto.cs",
               "RelativeDocumentMoniker": "PalService\\DTOs\\LoginDto.cs",
@@ -74,7 +138,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "ITripService.cs",
               "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalService\\Interface\\ITripService.cs",
               "RelativeDocumentMoniker": "PalService\\Interface\\ITripService.cs",
@@ -86,7 +150,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "BookingService.cs",
               "DocumentMoniker": "E:\\Up GitHub\\PalRide\\PalService\\BookingService.cs",
               "RelativeDocumentMoniker": "PalService\\BookingService.cs",
@@ -98,7 +162,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "dbo.Route.sql",
               "DocumentMoniker": "ViewDataWindow_MSSQL__/DESKTOP_8O97R1M_SQLEXPRESS/PalRide/sa/SqlTable/dbo.Route.sql",
               "ToolTip": "ViewDataWindow_MSSQL__/DESKTOP_8O97R1M_SQLEXPRESS/PalRide/sa/SqlTable/dbo.Route.sql",

@@ -91,8 +91,8 @@ namespace PalService
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password) || string.IsNullOrWhiteSpace(dto.FullName))
-                throw new InvalidOperationException("FullName, Email and Password are required");
+            if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
+                throw new InvalidOperationException("Email and Password are required");
 
             var existing = _userRepo.GetByEmail(dto.Email);
             if (existing != null)
@@ -100,11 +100,11 @@ namespace PalService
 
             var user = new User
             {
-                FullName = dto.FullName,
+                FullName = "",
                 Email = dto.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Role = string.IsNullOrWhiteSpace(dto.Role) ? "Both" : dto.Role,
-                PhoneNumber = dto.PhoneNumber ?? string.Empty,
+                Role = "Passenger",
+                PhoneNumber = string.Empty,
                 GmailVerified = false,
                 IsActive = true
             };
@@ -124,7 +124,7 @@ namespace PalService
             try
             {
                 await _emailService.SendEmailAsync(user.Email, "Your PalRide OTP",
-                    $"<p>Hi {user.FullName},</p><p>Your verification code is:</p><h2>{otp}</h2><p>This code expires in 10 minutes.</p>");
+                    $"<p>Hi,</p><p>Your verification code is:</p><h2>{otp}</h2><p>This code expires in 10 minutes.</p>");
             }
             catch
             {
@@ -165,7 +165,6 @@ namespace PalService
                 user.Email = dto.Email;
                 user.PhoneNumber = dto.PhoneNumber;
                 user.Role = dto.Role;
-                user.IsActive = dto.IsActive;
                 user.Introduce = dto.Introduce;
                 user.University = dto.University;
                 user.StudentId = dto.StudentId;
@@ -322,6 +321,25 @@ namespace PalService
         }
 
 
+
+        public async Task<ResponseDto<bool>> SetUserActiveAsync(int userId, bool isActive)
+        {
+            var response = new ResponseDto<bool>();
+            try
+            {
+                var user = await _userRepo.GetByIdAsync(userId) ?? throw new KeyNotFoundException("User not found");
+                user.IsActive = isActive;
+                await _userRepo.UpdateAsync(user);
+                response.Result = true;
+                response.Message = "User active status updated";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
 
         private async Task<AuthResponseDto> GenerateTokensAsync(User user)
         {

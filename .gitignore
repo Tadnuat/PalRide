@@ -65,6 +65,14 @@ coverage/
 *.nuspec
 packages/
 .nuget/
+
+# ---- ASP.NET Core ----
+wwwroot/lib/
+appsettings.Development.json
+appsettings.*.Local.json
+secrets.json
+secrets/*.json
+
 # ---- Publish profiles ----
 PublishProfiles/
 *.pubxml
@@ -81,5 +89,6 @@ _ReSharper.Caches/
 *.swp
 *.swo
 ehthumbs.db
+
 
 
