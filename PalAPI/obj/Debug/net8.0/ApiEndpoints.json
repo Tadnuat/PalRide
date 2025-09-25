@@ -275,6 +275,16 @@
   },
   {
     "ContainingType": "PalAPI.Controllers.BookingsController",
+    "Method": "GetMyBookingHistory",
+    "RelativePath": "api/Bookings/my-bookings/history",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.BookingsController",
     "Method": "GetQuote",
     "RelativePath": "api/Bookings/quote",
     "HttpMethod": "POST",
@@ -327,6 +337,22 @@
         "Name": "fullRide",
         "Type": "System.Boolean",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.RoutesController",
+    "Method": "RegisterRoute",
+    "RelativePath": "api/Routes/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.CreateRouteDto",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -399,6 +425,16 @@
     "ContainingType": "PalAPI.Controllers.TripsController",
     "Method": "GetMyTrips",
     "RelativePath": "api/Trips/my-trips",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.TripsController",
+    "Method": "GetMyTripHistory",
+    "RelativePath": "api/Trips/my-trips/history",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -521,6 +557,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "PalAPI.Controllers.TripsController",
+    "Method": "CreateSellTrip",
+    "RelativePath": "api/Trips/sell",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.CreateSellTripDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "PalAPI.Controllers.VehiclesController",
     "Method": "AddVehicle",
     "RelativePath": "api/Vehicles",
@@ -602,6 +654,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.WalletController",
+    "Method": "GetDriverSummary",
+    "RelativePath": "api/Wallet/driver/summary",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]

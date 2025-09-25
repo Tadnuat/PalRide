@@ -113,8 +113,8 @@ CREATE TABLE Trip (
   PricePerSeat DECIMAL(12,2) NOT NULL DEFAULT 0.00,
   PriceFullRide DECIMAL(12,2) NULL,
   Note NVARCHAR(500) NULL,
-  Status NVARCHAR(20) NOT NULL DEFAULT 'Pending'
-    CONSTRAINT CK_Trip_Status CHECK (Status IN ('Pending','Active','Completed','Cancelled')),
+  TripType NVARCHAR(20) NOT NULL DEFAULT 'Register',
+  Status NVARCHAR(20) NOT NULL DEFAULT 'Pending',
   CreatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
   UpdatedAt DATETIME2 NULL,
   CONSTRAINT FK_Trip_User FOREIGN KEY (DriverId) REFERENCES [User](UserId),

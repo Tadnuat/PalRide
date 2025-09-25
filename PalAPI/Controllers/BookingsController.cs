@@ -86,6 +86,18 @@ namespace PalAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("my-bookings/history")]
+        public async Task<IActionResult> GetMyBookingHistory()
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _bookingService.GetUserBookingHistoryAsync(userId);
+            
+            if (!result.IsSuccess)
+                return BadRequest(result);
+            
+            return Ok(result);
+        }
+
         [HttpGet("trip/{tripId}/bookings")]
         [Authorize(Roles = "Driver,Both")]
         public async Task<IActionResult> GetTripBookings(int tripId)

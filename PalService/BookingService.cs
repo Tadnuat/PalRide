@@ -29,6 +29,13 @@ namespace PalService
 
         // Removed: CreateBookingAsync replaced by quote + confirm
 
+        private static string MaskPhone(string phone)
+        {
+            if (string.IsNullOrWhiteSpace(phone) || phone.Length < 4) return string.Empty;
+            var last4 = phone[^4..];
+            return new string('*', Math.Max(0, phone.Length - 4)) + last4;
+        }
+
         public async Task<ResponseDto<BookingDto>> AcceptBookingAsync(int bookingId, int driverId)
         {
             var response = new ResponseDto<BookingDto>();
@@ -58,6 +65,7 @@ namespace PalService
                 }
 
                 booking.Status = "Accepted";
+                booking.UpdatedAt = DateTime.UtcNow;
                 await _bookingRepo.UpdateAsync(booking);
 
                 var passenger = await _userRepo.GetByIdAsync(booking.PassengerId);
@@ -148,15 +156,67 @@ namespace PalService
             try
             {
                 var bookings = await _context.Bookings
-                    .Where(b => b.PassengerId == userId)
+                    .Where(b => b.PassengerId == userId && b.Trip.Status != "Completed")
                     .OrderByDescending(b => b.BookingTime)
                     .ToListAsync();
 
-                var bookingDtos = new List<BookingDto>();
+                var result = new List<BookingDto>();
+
                 foreach (var booking in bookings)
                 {
                     var passenger = await _userRepo.GetByIdAsync(booking.PassengerId);
-                    bookingDtos.Add(new BookingDto
+                    var trip = await _tripRepo.GetByIdAsync(booking.TripId);
+                    Vehicle vehicle = null!;
+                    User driver = null!;
+                    if (trip != null)
+                    {
+                        if (trip.VehicleId.HasValue)
+                        {
+                            vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.VehicleId == trip.VehicleId.Value);
+                        }
+                        driver = await _userRepo.GetByIdAsync(trip.DriverId);
+                    }
+
+                    var tripDto = trip == null ? null : new TripDto
+                    {
+                        TripId = trip.TripId,
+                        DriverId = trip.DriverId,
+                        DriverName = driver?.FullName ?? "Unknown",
+                        PickupLocation = trip.PickupLocation,
+                        DropoffLocation = trip.DropoffLocation,
+                        StartTime = trip.StartTime,
+                        EndTime = trip.EndTime,
+                        PricePerSeat = trip.PricePerSeat,
+                        PriceFullRide = trip.PriceFullRide ?? 0,
+                        SeatTotal = trip.SeatTotal,
+                        SeatAvailable = trip.SeatAvailable,
+                        Status = trip.Status,
+                        TripType = trip.TripType,
+                        Note = trip.Note,
+                        CreatedAt = trip.CreatedAt,
+                        Vehicle = vehicle != null ? new VehicleDto
+                        {
+                            VehicleId = vehicle.VehicleId,
+                            LicensePlate = vehicle.LicensePlate,
+                            Brand = vehicle.Brand,
+                            Model = vehicle.Model,
+                            Color = vehicle.Color,
+                            Type = vehicle.Type,
+                            SeatCount = vehicle.SeatCount
+                        } : null,
+                        Driver = driver != null ? new DriverInfoDto
+                        {
+                            DriverId = driver.UserId,
+                            FullName = driver.FullName,
+                            PhoneNumberMasked = MaskPhone(driver.PhoneNumber),
+                            RatingAverage = driver.RatingAverage,
+                            ReviewsCount = await _context.Reviews.CountAsync(r => r.ToUserId == driver.UserId),
+                            GmailVerified = driver.GmailVerified,
+                            Introduce = driver.Introduce
+                        } : null
+                    };
+
+                    result.Add(new BookingDto
                     {
                         BookingId = booking.BookingId,
                         TripId = booking.TripId,
@@ -165,12 +225,104 @@ namespace PalService
                         SeatCount = booking.SeatCount,
                         TotalPrice = booking.TotalPrice,
                         Status = booking.Status,
-                        BookingTime = booking.BookingTime
+                        BookingTime = booking.BookingTime,
+                        Trip = tripDto
                     });
                 }
 
-                response.Result = bookingDtos;
+                response.Result = result;
                 response.Message = "Bookings retrieved successfully";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseDto<List<BookingDto>>> GetUserBookingHistoryAsync(int userId)
+        {
+            var response = new ResponseDto<List<BookingDto>>();
+            try
+            {
+                var bookings = await _context.Bookings
+                    .Where(b => b.PassengerId == userId && b.Trip.Status == "Completed")
+                    .OrderByDescending(b => b.BookingTime)
+                    .ToListAsync();
+
+                var result = new List<BookingDto>();
+
+                foreach (var booking in bookings)
+                {
+                    var passenger = await _userRepo.GetByIdAsync(booking.PassengerId);
+                    var trip = await _tripRepo.GetByIdAsync(booking.TripId);
+                    Vehicle vehicle = null!;
+                    User driver = null!;
+                    if (trip != null)
+                    {
+                        if (trip.VehicleId.HasValue)
+                        {
+                            vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.VehicleId == trip.VehicleId.Value);
+                        }
+                        driver = await _userRepo.GetByIdAsync(trip.DriverId);
+                    }
+
+                    var tripDto = trip == null ? null : new TripDto
+                    {
+                        TripId = trip.TripId,
+                        DriverId = trip.DriverId,
+                        DriverName = driver?.FullName ?? "Unknown",
+                        PickupLocation = trip.PickupLocation,
+                        DropoffLocation = trip.DropoffLocation,
+                        StartTime = trip.StartTime,
+                        EndTime = trip.EndTime,
+                        PricePerSeat = trip.PricePerSeat,
+                        PriceFullRide = trip.PriceFullRide ?? 0,
+                        SeatTotal = trip.SeatTotal,
+                        SeatAvailable = trip.SeatAvailable,
+                        Status = trip.Status,
+                        TripType = trip.TripType,
+                        Note = trip.Note,
+                        CreatedAt = trip.CreatedAt,
+                        Vehicle = vehicle != null ? new VehicleDto
+                        {
+                            VehicleId = vehicle.VehicleId,
+                            LicensePlate = vehicle.LicensePlate,
+                            Brand = vehicle.Brand,
+                            Model = vehicle.Model,
+                            Color = vehicle.Color,
+                            Type = vehicle.Type,
+                            SeatCount = vehicle.SeatCount
+                        } : null,
+                        Driver = driver != null ? new DriverInfoDto
+                        {
+                            DriverId = driver.UserId,
+                            FullName = driver.FullName,
+                            PhoneNumberMasked = MaskPhone(driver.PhoneNumber),
+                            RatingAverage = driver.RatingAverage,
+                            ReviewsCount = await _context.Reviews.CountAsync(r => r.ToUserId == driver.UserId),
+                            GmailVerified = driver.GmailVerified,
+                            Introduce = driver.Introduce
+                        } : null
+                    };
+
+                    result.Add(new BookingDto
+                    {
+                        BookingId = booking.BookingId,
+                        TripId = booking.TripId,
+                        PassengerId = booking.PassengerId,
+                        PassengerName = passenger?.FullName ?? "Unknown",
+                        SeatCount = booking.SeatCount,
+                        TotalPrice = booking.TotalPrice,
+                        Status = booking.Status,
+                        BookingTime = booking.BookingTime,
+                        Trip = tripDto
+                    });
+                }
+
+                response.Result = result;
+                response.Message = "Booking history retrieved successfully";
             }
             catch (Exception ex)
             {

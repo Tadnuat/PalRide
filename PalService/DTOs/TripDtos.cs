@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace PalService.DTOs
 {
@@ -29,11 +30,28 @@ namespace PalService.DTOs
         public int SeatTotal { get; set; }
         public int SeatAvailable { get; set; }
         public string Status { get; set; } = string.Empty;
+        public string TripType { get; set; } = string.Empty; // Register or Sell
         public string? Note { get; set; }
         public DateTime CreatedAt { get; set; }
         public VehicleDto? Vehicle { get; set; }
         public DriverInfoDto? Driver { get; set; }
-        public DriverInfoDto? Passenger { get; set; }
+        public PassengerInfoDto? Passenger { get; set; }
+        // Enriched for "my trips" screen
+        public List<PassengerInfoDto>? AcceptedPassengers { get; set; }
+        public List<PassengerInfoDto>? PendingPassengers { get; set; }
+    }
+
+    // For selling a trip: price per seat and full-ride price allowed; UI toggles "Bao xe" into a specific full-ride price field
+    public class CreateSellTripDto
+    {
+        public string PickupLocation { get; set; } = string.Empty;
+        public string DropoffLocation { get; set; } = string.Empty;
+        public DateTime StartTime { get; set; }
+        public decimal PricePerSeat { get; set; }
+        public decimal? FullRidePrice { get; set; } // Giá bao xe
+        public int SeatTotal { get; set; } = 4;
+        public int? VehicleId { get; set; }
+        public string? Note { get; set; }
     }
 
     public class VehicleDto
@@ -58,6 +76,20 @@ namespace PalService.DTOs
         public string? Introduce { get; set; }
     }
 
+    public class PassengerInfoDto
+    {
+        public int BookingId { get; set; }
+        public int PassengerId { get; set; }
+        public string FullName { get; set; } = string.Empty;
+        public string PhoneNumberMasked { get; set; } = string.Empty;
+        public decimal RatingAverage { get; set; }
+        public int ReviewsCount { get; set; }
+        public bool GmailVerified { get; set; }
+        public string? Introduce { get; set; }
+    }
+
+    // No extra passenger item DTO needed; we reuse DriverInfoDto for user info
+
     public class SearchTripsDto
     {
         public string? PickupLocation { get; set; }
@@ -73,6 +105,8 @@ namespace PalService.DTOs
         public string DropoffLocation { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
     }
+
+    // (Route DTOs moved to RouteDtos.cs)
 
     public class PriceRangeDto
     {

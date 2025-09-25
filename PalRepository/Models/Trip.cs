@@ -33,6 +33,8 @@ public partial class Trip
 
     public string Status { get; set; }
 
+    public string TripType { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }

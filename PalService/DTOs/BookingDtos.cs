@@ -13,6 +13,8 @@ namespace PalService.DTOs
         public decimal TotalPrice { get; set; }
         public string Status { get; set; } = string.Empty;
         public DateTime BookingTime { get; set; }
+        // Enriched details for "my bookings" screens
+        public TripDto? Trip { get; set; }
     }
 
     public class BookingQuoteRequestDto
@@ -44,6 +46,8 @@ namespace PalService.DTOs
         public string? Note { get; set; }
     }
 }
+
+
 
 
 

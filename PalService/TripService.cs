@@ -81,6 +81,7 @@ namespace PalService
                     SeatTotal = (byte)dto.SeatTotal,
                     SeatAvailable = (byte)dto.SeatTotal,
                     Status = "Pending",
+                    TripType = "Register",
                     Note = dto.Note,
                     CreatedAt = DateTime.UtcNow
                 };
@@ -107,6 +108,7 @@ namespace PalService
                     SeatTotal = trip.SeatTotal,
                     SeatAvailable = trip.SeatAvailable,
                     Status = trip.Status,
+                    TripType = trip.TripType,
                     Note = trip.Note,
                     CreatedAt = trip.CreatedAt,
                     Vehicle = vehicle != null ? new VehicleDto
@@ -144,6 +146,90 @@ namespace PalService
                 {
                     response.Message = inner;
                 }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseDto<TripDto>> CreateSellTripAsync(CreateSellTripDto dto, int driverId)
+        {
+            var response = new ResponseDto<TripDto>();
+            try
+            {
+                Vehicle vehicle = null!;
+                if (dto.VehicleId.HasValue)
+                {
+                    vehicle = await _vehicleRepo.GetByIdAsync(dto.VehicleId.Value);
+                    if (vehicle == null || vehicle.UserId != driverId)
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "Vehicle not found or does not belong to you";
+                        return response;
+                    }
+                }
+
+                var hasPendingTrip = await _context.Trips
+                    .AnyAsync(t => t.DriverId == driverId && t.Status == "Pending");
+                if (hasPendingTrip)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "You already have a pending trip";
+                    return response;
+                }
+
+                var trip = new Trip
+                {
+                    DriverId = driverId,
+                    VehicleId = dto.VehicleId,
+                    PickupLocation = dto.PickupLocation,
+                    DropoffLocation = dto.DropoffLocation,
+                    StartTime = dto.StartTime,
+                    PricePerSeat = dto.PricePerSeat,
+                    PriceFullRide = dto.FullRidePrice,
+                    SeatTotal = (byte)Math.Max(1, dto.SeatTotal),
+                    SeatAvailable = (byte)Math.Max(1, dto.SeatTotal),
+                    Status = "Pending",
+                    TripType = "Sell",
+                    Note = dto.Note,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                await _tripRepo.CreateAsync(trip);
+
+                var driver = await _userRepo.GetByIdAsync(driverId);
+                response.Result = new TripDto
+                {
+                    TripId = trip.TripId,
+                    DriverId = trip.DriverId,
+                    DriverName = driver?.FullName ?? "Unknown",
+                    PickupLocation = trip.PickupLocation,
+                    DropoffLocation = trip.DropoffLocation,
+                    StartTime = trip.StartTime,
+                    EndTime = trip.EndTime,
+                    PricePerSeat = trip.PricePerSeat,
+                    PriceFullRide = trip.PriceFullRide ?? 0,
+                    SeatTotal = trip.SeatTotal,
+                    SeatAvailable = trip.SeatAvailable,
+                    Status = trip.Status,
+                    TripType = trip.TripType,
+                    Note = trip.Note,
+                    CreatedAt = trip.CreatedAt,
+                    Vehicle = vehicle != null ? new VehicleDto
+                    {
+                        VehicleId = vehicle.VehicleId,
+                        LicensePlate = vehicle.LicensePlate,
+                        Brand = vehicle.Brand,
+                        Model = vehicle.Model,
+                        Color = vehicle.Color,
+                        Type = vehicle.Type,
+                        SeatCount = vehicle.SeatCount
+                    } : null
+                };
+                response.Message = "Sell trip created successfully";
             }
             catch (Exception ex)
             {
@@ -208,6 +294,7 @@ namespace PalService
                         SeatTotal = trip.SeatTotal,
                         SeatAvailable = trip.SeatAvailable,
                         Status = trip.Status,
+                        TripType = trip.TripType,
                         Note = trip.Note,
                         CreatedAt = trip.CreatedAt,
                         Vehicle = vehicle != null ? new VehicleDto
@@ -277,11 +364,12 @@ namespace PalService
                         SeatTotal = req.SeatTotal,
                         SeatAvailable = req.SeatAvailable,
                         Status = req.Status,
+                        TripType = req.TripType,
                         Note = req.Note,
                         CreatedAt = req.CreatedAt,
-                        Passenger = owner != null ? new DriverInfoDto
+                        Passenger = owner != null ? new PassengerInfoDto
                         {
-                            DriverId = owner.UserId,
+                            PassengerId = owner.UserId,
                             FullName = owner.FullName,
                             PhoneNumberMasked = MaskPhone(owner.PhoneNumber),
                             RatingAverage = owner.RatingAverage,
@@ -343,11 +431,12 @@ namespace PalService
                         SeatTotal = req.SeatTotal,
                         SeatAvailable = req.SeatAvailable,
                         Status = req.Status,
+                        TripType = req.TripType,
                         Note = req.Note,
                         CreatedAt = req.CreatedAt,
-                        Passenger = owner != null ? new DriverInfoDto
+                        Passenger = owner != null ? new PassengerInfoDto
                         {
-                            DriverId = owner.UserId,
+                            PassengerId = owner.UserId,
                             FullName = owner.FullName,
                             PhoneNumberMasked = MaskPhone(owner.PhoneNumber),
                             RatingAverage = owner.RatingAverage,
@@ -375,7 +464,7 @@ namespace PalService
             try
             {
                 var trips = await _context.Trips
-                    .Where(t => t.DriverId == driverId)
+                    .Where(t => t.DriverId == driverId && t.TripType != "Request" && t.Status != "Completed")
                     .OrderByDescending(t => t.CreatedAt)
                     .ToListAsync();
 
@@ -384,6 +473,33 @@ namespace PalService
                 {
                     var driver = await _userRepo.GetByIdAsync(trip.DriverId);
                     var vehicle = trip.VehicleId.HasValue ? await _vehicleRepo.GetByIdAsync(trip.VehicleId.Value) : null;
+                    // Build passenger lists
+                    var tripBookings = await _context.Bookings
+                        .Where(b => b.TripId == trip.TripId)
+                        .OrderByDescending(b => b.BookingTime)
+                        .ToListAsync();
+                    var accepted = new List<PassengerInfoDto>();
+                    var pending = new List<PassengerInfoDto>();
+                    foreach (var b in tripBookings)
+                    {
+                        var p = await _userRepo.GetByIdAsync(b.PassengerId);
+                        if (p == null) continue;
+                        var info = new PassengerInfoDto
+                        {
+                            BookingId = b.BookingId,
+                            PassengerId = p.UserId,
+                            FullName = p.FullName,
+                            PhoneNumberMasked = MaskPhone(p.PhoneNumber),
+                            RatingAverage = p.RatingAverage,
+                            ReviewsCount = await _context.Reviews.CountAsync(r => r.ToUserId == p.UserId),
+                            GmailVerified = p.GmailVerified,
+                            Introduce = p.Introduce
+                        };
+                        if (string.Equals(b.Status, "Accepted", StringComparison.OrdinalIgnoreCase))
+                            accepted.Add(info);
+                        else if (string.Equals(b.Status, "Pending", StringComparison.OrdinalIgnoreCase))
+                            pending.Add(info);
+                    }
 
                     tripDtos.Add(new TripDto
                     {
@@ -399,6 +515,7 @@ namespace PalService
                         SeatTotal = trip.SeatTotal,
                         SeatAvailable = trip.SeatAvailable,
                         Status = trip.Status,
+                        TripType = trip.TripType,
                         Note = trip.Note,
                         CreatedAt = trip.CreatedAt,
                         Vehicle = vehicle != null ? new VehicleDto
@@ -410,12 +527,100 @@ namespace PalService
                             Color = vehicle.Color,
                             Type = vehicle.Type,
                             SeatCount = vehicle.SeatCount
-                        } : null
+                        } : null,
+                        AcceptedPassengers = accepted,
+                        PendingPassengers = pending
                     });
                 }
 
                 response.Result = tripDtos;
                 response.Message = "Driver trips retrieved successfully";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseDto<List<TripDto>>> GetDriverTripHistoryAsync(int driverId)
+        {
+            var response = new ResponseDto<List<TripDto>>();
+            try
+            {
+                var trips = await _context.Trips
+                    .Where(t => t.DriverId == driverId && t.TripType != "Request" && t.Status == "Completed")
+                    .OrderByDescending(t => t.CreatedAt)
+                    .ToListAsync();
+
+                var tripDtos = new List<TripDto>();
+                foreach (var trip in trips)
+                {
+                    var driver = await _userRepo.GetByIdAsync(trip.DriverId);
+                    var vehicle = trip.VehicleId.HasValue ? await _vehicleRepo.GetByIdAsync(trip.VehicleId.Value) : null;
+                    // Build passenger lists
+                    var tripBookings = await _context.Bookings
+                        .Where(b => b.TripId == trip.TripId)
+                        .OrderByDescending(b => b.BookingTime)
+                        .ToListAsync();
+                    var accepted = new List<PassengerInfoDto>();
+                    var pending = new List<PassengerInfoDto>();
+                    foreach (var b in tripBookings)
+                    {
+                        var p = await _userRepo.GetByIdAsync(b.PassengerId);
+                        if (p == null) continue;
+                        var info = new PassengerInfoDto
+                        {
+                            BookingId = b.BookingId,
+                            PassengerId = p.UserId,
+                            FullName = p.FullName,
+                            PhoneNumberMasked = MaskPhone(p.PhoneNumber),
+                            RatingAverage = p.RatingAverage,
+                            ReviewsCount = await _context.Reviews.CountAsync(r => r.ToUserId == p.UserId),
+                            GmailVerified = p.GmailVerified,
+                            Introduce = p.Introduce
+                        };
+                        if (string.Equals(b.Status, "Accepted", StringComparison.OrdinalIgnoreCase))
+                            accepted.Add(info);
+                        else if (string.Equals(b.Status, "Pending", StringComparison.OrdinalIgnoreCase))
+                            pending.Add(info);
+                    }
+
+                    tripDtos.Add(new TripDto
+                    {
+                        TripId = trip.TripId,
+                        DriverId = trip.DriverId,
+                        DriverName = driver?.FullName ?? "Unknown",
+                        PickupLocation = trip.PickupLocation,
+                        DropoffLocation = trip.DropoffLocation,
+                        StartTime = trip.StartTime,
+                        EndTime = trip.EndTime,
+                        PricePerSeat = trip.PricePerSeat,
+                        PriceFullRide = trip.PriceFullRide ?? 0,
+                        SeatTotal = trip.SeatTotal,
+                        SeatAvailable = trip.SeatAvailable,
+                        Status = trip.Status,
+                        TripType = trip.TripType,
+                        Note = trip.Note,
+                        CreatedAt = trip.CreatedAt,
+                        Vehicle = vehicle != null ? new VehicleDto
+                        {
+                            VehicleId = vehicle.VehicleId,
+                            LicensePlate = vehicle.LicensePlate,
+                            Brand = vehicle.Brand,
+                            Model = vehicle.Model,
+                            Color = vehicle.Color,
+                            Type = vehicle.Type,
+                            SeatCount = vehicle.SeatCount
+                        } : null,
+                        AcceptedPassengers = accepted,
+                        PendingPassengers = pending
+                    });
+                }
+
+                response.Result = tripDtos;
+                response.Message = "Driver trip history retrieved successfully";
             }
             catch (Exception ex)
             {
@@ -444,6 +649,34 @@ namespace PalService
                     ? await _context.Reviews.CountAsync(r => r.ToUserId == driver.UserId)
                     : 0;
 
+                // Passenger lists for detailed view
+                var tripBookings = await _context.Bookings
+                    .Where(b => b.TripId == trip.TripId)
+                    .OrderByDescending(b => b.BookingTime)
+                    .ToListAsync();
+                var accepted = new List<PassengerInfoDto>();
+                var pending = new List<PassengerInfoDto>();
+                foreach (var b in tripBookings)
+                {
+                    var p = await _userRepo.GetByIdAsync(b.PassengerId);
+                    if (p == null) continue;
+                    var info = new PassengerInfoDto
+                    {
+                        BookingId = b.BookingId,
+                        PassengerId = p.UserId,
+                        FullName = p.FullName,
+                        PhoneNumberMasked = MaskPhone(p.PhoneNumber),
+                        RatingAverage = p.RatingAverage,
+                        ReviewsCount = await _context.Reviews.CountAsync(r => r.ToUserId == p.UserId),
+                        GmailVerified = p.GmailVerified,
+                        Introduce = p.Introduce
+                    };
+                    if (string.Equals(b.Status, "Accepted", StringComparison.OrdinalIgnoreCase))
+                        accepted.Add(info);
+                    else if (string.Equals(b.Status, "Pending", StringComparison.OrdinalIgnoreCase))
+                        pending.Add(info);
+                }
+
                 response.Result = new TripDto
                 {
                     TripId = trip.TripId,
@@ -458,6 +691,7 @@ namespace PalService
                     SeatTotal = trip.SeatTotal,
                     SeatAvailable = trip.SeatAvailable,
                     Status = trip.Status,
+                    TripType = trip.TripType,
                     Note = trip.Note,
                     CreatedAt = trip.CreatedAt,
                     Vehicle = vehicle != null ? new VehicleDto
@@ -479,7 +713,9 @@ namespace PalService
                         ReviewsCount = reviewsCountDetail,
                         GmailVerified = driver.GmailVerified,
                         Introduce = driver.Introduce
-                    } : null
+                    } : null,
+                    AcceptedPassengers = accepted,
+                    PendingPassengers = pending
                 };
                 response.Message = "Trip retrieved successfully";
             }
@@ -679,6 +915,8 @@ namespace PalService
             }
             return response;
         }
+
+        // Route-specific methods moved to RouteService
 
         private class NominatimResult
         {
@@ -897,6 +1135,7 @@ namespace PalService
                     SeatTotal = (byte)Math.Max(1, dto.SeatCount),
                     SeatAvailable = (byte)Math.Max(1, dto.SeatCount),
                     Status = "Looking",
+                    TripType = "Request",
                     Note = dto.Note,
                     CreatedAt = DateTime.UtcNow
                 };

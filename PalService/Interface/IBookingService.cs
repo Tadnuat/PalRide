@@ -8,6 +8,7 @@ namespace PalService.Interface
         Task<ResponseDto<BookingDto>> AcceptBookingAsync(int bookingId, int driverId);
         Task<ResponseDto<BookingDto>> CancelBookingAsync(int bookingId, int userId);
         Task<ResponseDto<List<BookingDto>>> GetUserBookingsAsync(int userId);
+        Task<ResponseDto<List<BookingDto>>> GetUserBookingHistoryAsync(int userId);
         Task<ResponseDto<List<BookingDto>>> GetTripBookingsAsync(int tripId, int driverId);
 
         // Pre-booking flow

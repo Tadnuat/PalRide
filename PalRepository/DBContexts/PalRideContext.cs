@@ -308,6 +308,10 @@ public partial class PalRideContext : DbContext
                 .IsRequired()
                 .HasMaxLength(20)
                 .HasDefaultValue("Pending");
+            entity.Property(e => e.TripType)
+                .IsRequired()
+                .HasMaxLength(20)
+                .HasDefaultValue("Register");
 
             entity.HasOne(d => d.Driver).WithMany(p => p.Trips)
                 .HasForeignKey(d => d.DriverId)
