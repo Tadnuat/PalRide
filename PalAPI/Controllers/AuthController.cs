@@ -51,6 +51,11 @@ namespace PalAPI.Controllers
         public async Task<IActionResult> VerifyOtp(VerifyOtpDto dto)
             => Ok(await _authService.VerifyOtpAsync(dto));
 
+        [AllowAnonymous]
+        [HttpPost("resend-otp")]
+        public async Task<IActionResult> ResendOtp(ResendOtpDto dto)
+            => Ok(await _authService.ResendOtpAsync(dto));
+
         [Authorize]
         [HttpPut("update/{userId}")]
         public async Task<IActionResult> UpdateUser(int userId, UpdateUserDto dto)

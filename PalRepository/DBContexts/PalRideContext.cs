@@ -329,7 +329,9 @@ public partial class PalRideContext : DbContext
 
             entity.ToTable("User");
 
-            entity.HasIndex(e => e.PhoneNumber, "UQ__User__85FB4E38ED695AA3").IsUnique();
+            entity.HasIndex(e => e.PhoneNumber, "UQ_User_PhoneNumber")
+                .IsUnique()
+                .HasFilter("[PhoneNumber] IS NOT NULL");
 
             entity.HasIndex(e => e.Email, "UQ__User__A9D105342D514E81").IsUnique();
 
@@ -348,7 +350,6 @@ public partial class PalRideContext : DbContext
                 .IsRequired()
                 .HasMaxLength(255);
             entity.Property(e => e.PhoneNumber)
-                .IsRequired()
                 .HasMaxLength(15);
             entity.Property(e => e.RatingAverage).HasColumnType("decimal(3, 2)");
             entity.Property(e => e.RefreshToken).HasMaxLength(255);

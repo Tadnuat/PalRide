@@ -49,6 +49,14 @@ namespace PalService.DTOs
         public string Role { get; set; }
     }
 
+    public class RegisterResponseDto
+    {
+        public bool IsSuccess { get; set; }
+        public string Message { get; set; }
+        public string Email { get; set; }
+        public bool RequiresVerification { get; set; }
+    }
+
     public class RegisterDto
     {
         public string Email { get; set; }
@@ -61,11 +69,16 @@ namespace PalService.DTOs
         public string Otp { get; set; }
     }
 
+    public class ResendOtpDto
+    {
+        public string Email { get; set; }
+    }
+
     public class UpdateUserDto
     {
         public string FullName { get; set; }
         public string Email { get; set; }
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
         public string Role { get; set; }
         public string Introduce { get; set; }
         public string University { get; set; }

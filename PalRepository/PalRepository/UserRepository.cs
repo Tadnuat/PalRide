@@ -23,5 +23,15 @@ namespace PalRepository.PalRepository
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
+
+        public User? GetByPhoneNumber(string phoneNumber)
+        {
+            return _context.Users.FirstOrDefault(u => u.PhoneNumber == phoneNumber);
+        }
+
+        public async Task<User?> GetByPhoneNumberAsync(string phoneNumber)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+        }
     }
 }

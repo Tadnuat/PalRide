@@ -38,6 +38,14 @@ namespace PalService
             if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
                 throw new UnauthorizedAccessException("Invalid credentials");
 
+            // Check if email is verified
+            if (!user.GmailVerified)
+                throw new UnauthorizedAccessException("Please verify your email before logging in. Check your email for verification code.");
+
+            // Check if user is active
+            if (!user.IsActive)
+                throw new UnauthorizedAccessException("Your account has been deactivated. Please contact support.");
+
             return await GenerateTokensAsync(user);
         }
 
@@ -69,7 +77,7 @@ namespace PalService
                     Email = payload.Email,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("string123"),
                     Role = "Both",
-                    PhoneNumber = "",
+                    PhoneNumber = null,
                     GmailVerified = true,
                     IsActive = true
                 };
@@ -89,7 +97,7 @@ namespace PalService
         }
 
 
-        public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
+        public async Task<RegisterResponseDto> RegisterAsync(RegisterDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
                 throw new InvalidOperationException("Email and Password are required");
@@ -100,11 +108,11 @@ namespace PalService
 
             var user = new User
             {
-                FullName = "",
+                FullName = dto.Email.Split('@')[0], // Use email prefix as default name
                 Email = dto.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Role = "Passenger",
-                PhoneNumber = string.Empty,
+                PhoneNumber = null, // PhoneNumber is now nullable
                 GmailVerified = false,
                 IsActive = true
             };
@@ -121,16 +129,25 @@ namespace PalService
                 Used = false,
                 CreatedAt = DateTime.UtcNow
             });
+            
             try
             {
                 await _emailService.SendEmailAsync(user.Email, "Your PalRide OTP",
-                    $"<p>Hi,</p><p>Your verification code is:</p><h2>{otp}</h2><p>This code expires in 10 minutes.</p>");
+                    $"<p>Hi {user.FullName},</p><p>Your verification code is:</p><h2>{otp}</h2><p>This code expires in 10 minutes.</p><p>Please verify your email to complete registration.</p>");
             }
             catch
             {
                 // Swallow email errors so registration still succeeds; OTP exists in DB
             }
-            return await GenerateTokensAsync(user);
+
+            // Return registration response without token - user must verify email first
+            return new RegisterResponseDto
+            {
+                IsSuccess = true,
+                Message = "Registration successful. Please check your email and verify your account.",
+                Email = user.Email,
+                RequiresVerification = true
+            };
         }
 
         public async Task<AuthResponseDto> VerifyOtpAsync(VerifyOtpDto dto)
@@ -148,6 +165,76 @@ namespace PalService
             return await GenerateTokensAsync(user);
         }
 
+        public async Task<ResponseDto<bool>> ResendOtpAsync(ResendOtpDto dto)
+        {
+            var response = new ResponseDto<bool>();
+            try
+            {
+                var user = await _userRepo.GetByEmailAsync(dto.Email);
+                if (user == null) throw new KeyNotFoundException("User not found");
+
+                // Check if user is already verified
+                if (user.GmailVerified)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Email is already verified";
+                    response.Result = false;
+                    return response;
+                }
+
+                // Get the latest OTP token for this user
+                var latestToken = await _tokenRepo.GetLatestByUserIdAsync(user.UserId);
+                
+                // Check if there's a recent OTP request (within 1 minute to prevent spam)
+                if (latestToken != null && latestToken.CreatedAt > DateTime.UtcNow.AddMinutes(-1))
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Please wait at least 1 minute before requesting a new OTP";
+                    response.Result = false;
+                    return response;
+                }
+
+                // Mark all existing OTP tokens as used
+                await _tokenRepo.MarkAllUsedForUserAsync(user.UserId);
+
+                // Generate new OTP (6 digits)
+                var newOtp = new Random().Next(100000, 999999).ToString();
+                
+                // Create new OTP token
+                await _tokenRepo.CreateAsync(new PasswordResetToken
+                {
+                    UserId = user.UserId,
+                    Token = newOtp,
+                    ExpiresAt = DateTime.UtcNow.AddMinutes(10),
+                    Used = false,
+                    CreatedAt = DateTime.UtcNow
+                });
+
+                // Send email with new OTP
+                try
+                {
+                    await _emailService.SendEmailAsync(user.Email, "Your New PalRide OTP",
+                        $"<p>Hi {user.FullName},</p><p>Your new verification code is:</p><h2>{newOtp}</h2><p>This code expires in 10 minutes.</p><p>If you didn't request this code, please ignore this email.</p>");
+                    
+                    response.Result = true;
+                    response.Message = "New OTP has been sent to your email";
+                }
+                catch (Exception ex)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Failed to send email. Please try again later.";
+                    response.Result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+                response.Result = false;
+            }
+            return response;
+        }
+
         public async Task<ResponseDto<UserDto>> UpdateUserAsync(int userId, UpdateUserDto dto)
         {
             var response = new ResponseDto<UserDto>();
@@ -155,10 +242,19 @@ namespace PalService
             {
                 var user = await _userRepo.GetByIdAsync(userId) ?? throw new KeyNotFoundException("User not found");
 
+                // Check if email is being changed and if new email already exists
                 if (!user.Email.Equals(dto.Email, StringComparison.OrdinalIgnoreCase))
                 {
                     var exists = await _userRepo.GetByEmailAsync(dto.Email);
                     if (exists != null) throw new InvalidOperationException("Email is already taken");
+                }
+
+                // Check if phone number is being changed and if new phone number already exists
+                if (!string.IsNullOrEmpty(dto.PhoneNumber) && 
+                    (user.PhoneNumber != dto.PhoneNumber))
+                {
+                    var phoneExists = await _userRepo.GetByPhoneNumberAsync(dto.PhoneNumber);
+                    if (phoneExists != null) throw new InvalidOperationException("Phone number is already taken");
                 }
 
                 user.FullName = dto.FullName;
