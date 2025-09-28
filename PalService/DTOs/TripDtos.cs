@@ -41,18 +41,6 @@ namespace PalService.DTOs
         public List<PassengerInfoDto>? PendingPassengers { get; set; }
     }
 
-    // For selling a trip: price per seat and full-ride price allowed; UI toggles "Bao xe" into a specific full-ride price field
-    public class CreateSellTripDto
-    {
-        public string PickupLocation { get; set; } = string.Empty;
-        public string DropoffLocation { get; set; } = string.Empty;
-        public DateTime StartTime { get; set; }
-        public decimal PricePerSeat { get; set; }
-        public decimal? FullRidePrice { get; set; } // Giá bao xe
-        public int SeatTotal { get; set; } = 4;
-        public int? VehicleId { get; set; }
-        public string? Note { get; set; }
-    }
 
     public class VehicleDto
     {
@@ -149,6 +137,24 @@ namespace PalService.DTOs
         public int SeatCount { get; set; } = 1;
         public bool FullRide { get; set; } = false; // Bao xe
         public decimal? OfferedPrice { get; set; } // optional price the passenger suggests
+        public string? Note { get; set; }
+    }
+
+    public class AcceptPassengerRequestDto
+    {
+        public int RequestTripId { get; set; }
+        public int? VehicleId { get; set; }
+        public decimal PricePerSeat { get; set; }
+        public decimal? PriceFullRide { get; set; }
+        public string? Note { get; set; }
+    }
+
+    public class UpdateTripDto
+    {
+        public int? VehicleId { get; set; }
+        public int? SeatTotal { get; set; }
+        public decimal? PricePerSeat { get; set; }
+        public decimal? PriceFullRide { get; set; }
         public string? Note { get; set; }
     }
 }

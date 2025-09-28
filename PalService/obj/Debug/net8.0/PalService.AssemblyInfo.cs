@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PalService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d25ef3691de74d5355b8004b7995884749675f78")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+906d06a4396cf06e13b032ade451991ddcd6b974")]
 [assembly: System.Reflection.AssemblyProductAttribute("PalService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PalService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

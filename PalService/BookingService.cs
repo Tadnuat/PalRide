@@ -16,8 +16,9 @@ namespace PalService
         private readonly GenericRepository<Trip> _tripRepo;
         private readonly GenericRepository<UserVoucher> _userVoucherRepo;
         private readonly GenericRepository<Voucher> _voucherRepo;
+        private readonly INotificationService _notificationService;
 
-        public BookingService(PalRideContext context, UserRepository userRepo, BookingRepository bookingRepo, GenericRepository<Trip> tripRepo, GenericRepository<UserVoucher> userVoucherRepo, GenericRepository<Voucher> voucherRepo)
+        public BookingService(PalRideContext context, UserRepository userRepo, BookingRepository bookingRepo, GenericRepository<Trip> tripRepo, GenericRepository<UserVoucher> userVoucherRepo, GenericRepository<Voucher> voucherRepo, INotificationService notificationService)
         {
             _context = context;
             _userRepo = userRepo;
@@ -25,6 +26,7 @@ namespace PalService
             _tripRepo = tripRepo;
             _userVoucherRepo = userVoucherRepo;
             _voucherRepo = voucherRepo;
+            _notificationService = notificationService;
         }
 
         // Removed: CreateBookingAsync replaced by quote + confirm
@@ -67,6 +69,16 @@ namespace PalService
                 booking.Status = "Accepted";
                 booking.UpdatedAt = DateTime.UtcNow;
                 await _bookingRepo.UpdateAsync(booking);
+                await _context.SaveChangesAsync();
+
+                // Send notification to passenger
+                await _notificationService.SendAndSaveNotificationToUserAsync(
+                    booking.PassengerId, 
+                    "Tài xế chấp nhận booking", 
+                    "Tài xế đã chấp nhận booking của bạn.", 
+                    "Important", 
+                    "Booking", 
+                    bookingId);
 
                 var passenger = await _userRepo.GetByIdAsync(booking.PassengerId);
 
@@ -126,6 +138,31 @@ namespace PalService
                 // Return seats to trip
                 trip.SeatAvailable += booking.SeatCount;
                 await _tripRepo.UpdateAsync(trip);
+                await _context.SaveChangesAsync();
+
+                // Send notification to the other party
+                if (booking.PassengerId == userId)
+                {
+                    // Passenger cancelled, notify driver
+                    await _notificationService.SendAndSaveNotificationToUserAsync(
+                        trip.DriverId, 
+                        "Hành khách hủy booking", 
+                        "Hành khách đã hủy booking chuyến đi của bạn.", 
+                        "Important", 
+                        "Booking", 
+                        bookingId);
+                }
+                else
+                {
+                    // Driver cancelled, notify passenger
+                    await _notificationService.SendAndSaveNotificationToUserAsync(
+                        booking.PassengerId, 
+                        "Tài xế hủy booking", 
+                        "Tài xế đã hủy booking của bạn.", 
+                        "Important", 
+                        "Booking", 
+                        bookingId);
+                }
 
                 var passenger = await _userRepo.GetByIdAsync(booking.PassengerId);
 

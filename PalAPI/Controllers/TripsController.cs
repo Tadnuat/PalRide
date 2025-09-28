@@ -30,15 +30,6 @@ namespace PalAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPost("sell")]
-        [Authorize(Roles = "Driver,Both")]
-        public async Task<IActionResult> CreateSellTrip(CreateSellTripDto dto)
-        {
-            var driverId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var result = await _tripService.CreateSellTripAsync(dto, driverId);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
-        }
 
         [HttpGet("search")]
         [AllowAnonymous]
@@ -67,6 +58,32 @@ namespace PalAPI.Controllers
         {
             var result = await _tripService.SearchPassengerRequestsFilteredAsync(dto);
             if (!result.IsSuccess) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpPost("accept-request")]
+        [Authorize(Roles = "Driver,Both")]
+        public async Task<IActionResult> AcceptPassengerRequest(AcceptPassengerRequestDto dto)
+        {
+            var driverId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _tripService.AcceptPassengerRequestAsync(driverId, dto);
+            
+            if (!result.IsSuccess)
+                return BadRequest(result);
+            
+            return Ok(result);
+        }
+
+        [HttpPut("{tripId}")]
+        [Authorize(Roles = "Driver,Both")]
+        public async Task<IActionResult> UpdateTrip(int tripId, UpdateTripDto dto)
+        {
+            var driverId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _tripService.UpdateTripAsync(tripId, driverId, dto);
+            
+            if (!result.IsSuccess)
+                return BadRequest(result);
+            
             return Ok(result);
         }
 

@@ -163,3 +163,10 @@ E:\Up GitHub\PalRide\PalAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 E:\Up GitHub\PalRide\PalAPI\obj\Debug\net8.0\PalAPI.csproj.Up2Date
 E:\Up GitHub\PalRide\PalAPI\obj\Debug\net8.0\PalAPI.genruntimeconfig.cache
 E:\Up GitHub\PalRide\PalAPI\obj\Debug\net8.0\ref\PalAPI.dll
+E:\Up GitHub\PalRide\PalAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\Up GitHub\PalRide\PalAPI\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+E:\Up GitHub\PalRide\PalAPI\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
+E:\Up GitHub\PalRide\PalAPI\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+E:\Up GitHub\PalRide\PalAPI\bin\Debug\net8.0\Microsoft.Extensions.ObjectPool.dll
+E:\Up GitHub\PalRide\PalAPI\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+E:\Up GitHub\PalRide\PalAPI\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll

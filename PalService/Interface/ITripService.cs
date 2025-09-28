@@ -7,7 +7,6 @@ namespace PalService.Interface
     public interface ITripService
     {
         Task<ResponseDto<TripDto>> CreateTripAsync(CreateTripDto dto, int driverId);
-        Task<ResponseDto<TripDto>> CreateSellTripAsync(CreateSellTripDto dto, int driverId);
         Task<ResponseDto<List<TripDto>>> SearchTripsAsync(SearchTripsDto dto);
         Task<ResponseDto<List<TripDto>>> SearchPassengerRequestsAsync(SearchTripsDto dto);
         Task<ResponseDto<List<TripDto>>> SearchPassengerRequestsFilteredAsync(SearchTripsDto dto);
@@ -23,5 +22,7 @@ namespace PalService.Interface
         Task<ResponseDto<VehicleDto>> UpdateVehicleAsync(int userId, int vehicleId, UpdateVehicleDto dto);
         Task<ResponseDto<TripDto>> CreatePassengerRequestAsync(int userId, CreatePassengerRequestDto dto);
         Task<ResponseDto<bool>> WithdrawPassengerRequestAsync(int userId, int tripId);
+        Task<ResponseDto<TripDto>> AcceptPassengerRequestAsync(int driverId, AcceptPassengerRequestDto dto);
+        Task<ResponseDto<TripDto>> UpdateTripAsync(int tripId, int driverId, UpdateTripDto dto);
     }
 }

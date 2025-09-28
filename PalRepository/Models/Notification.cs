@@ -11,6 +11,8 @@ public partial class Notification
 
     public int? UserId { get; set; }
 
+    public string? UserRole { get; set; }
+
     public string Title { get; set; }
 
     public string Message { get; set; }
@@ -22,6 +24,10 @@ public partial class Notification
     public DateTime CreatedAt { get; set; }
 
     public int? CreatedBy { get; set; }
+
+    public string? RelatedEntityType { get; set; }
+
+    public int? RelatedEntityId { get; set; }
 
     public virtual Admin CreatedByNavigation { get; set; }
 

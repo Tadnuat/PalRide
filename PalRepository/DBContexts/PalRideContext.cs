@@ -153,6 +153,8 @@ public partial class PalRideContext : DbContext
             entity.Property(e => e.Type)
                 .HasMaxLength(20)
                 .HasDefaultValue("System");
+            entity.Property(e => e.UserRole).HasMaxLength(50);
+            entity.Property(e => e.RelatedEntityType).HasMaxLength(50);
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.CreatedBy)
