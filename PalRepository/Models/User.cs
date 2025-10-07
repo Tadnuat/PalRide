@@ -47,6 +47,20 @@ public partial class User
 
     public DateTime? RefreshTokenExpiry { get; set; }
 
+    public string? Avatar { get; set; }
+
+    public string? DriverLicenseNumber { get; set; }
+
+    public string? DriverLicenseImage { get; set; }
+
+    public string? CitizenId { get; set; }
+
+    public string? CitizenIdImage { get; set; }
+
+    public bool? DriverLicenseVerified { get; set; }
+
+    public bool? CitizenIdVerified { get; set; }
+
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
     public virtual ICollection<Message> MessageFromUsers { get; set; } = new List<Message>();

@@ -78,3 +78,5 @@ namespace PalService.DTOs
         public int Count { get; set; }
     }
 }
+
+

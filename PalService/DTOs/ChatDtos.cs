@@ -60,3 +60,5 @@ namespace PalService.DTOs
         public int FromUserId { get; set; }
     }
 }
+
+

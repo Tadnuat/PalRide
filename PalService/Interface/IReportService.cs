@@ -14,3 +14,5 @@ namespace PalService.Interface
         Task<ResponseDto<List<ReportDto>>> GetReportsByStatusAsync(string status);
     }
 }
+
+

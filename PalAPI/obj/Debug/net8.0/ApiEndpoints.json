@@ -64,6 +64,69 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "PalAPI.Controllers.AdminUserController",
+    "Method": "UpdateCitizenIdVerification",
+    "RelativePath": "api/admin/users/{userId}/citizen-id-verification",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "isVerified",
+        "Type": "System.Boolean",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.AdminUserController",
+    "Method": "UpdateUserDocuments",
+    "RelativePath": "api/admin/users/{userId}/documents",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.UpdateUserDocumentsDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.AdminUserController",
+    "Method": "UpdateDriverLicenseVerification",
+    "RelativePath": "api/admin/users/{userId}/driver-license-verification",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "isVerified",
+        "Type": "System.Boolean",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "PalAPI.Controllers.AuthController",
     "Method": "SetActive",
     "RelativePath": "api/Auth/{userId}/active",
@@ -176,6 +239,22 @@
   },
   {
     "ContainingType": "PalAPI.Controllers.AuthController",
+    "Method": "UpdateProfile",
+    "RelativePath": "api/Auth/profile",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.UpdateUserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.AuthController",
     "Method": "GetProfile",
     "RelativePath": "api/Auth/profile",
     "HttpMethod": "GET",
@@ -240,27 +319,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PalAPI.Controllers.AuthController",
-    "Method": "UpdateUser",
-    "RelativePath": "api/Auth/update/{userId}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "dto",
-        "Type": "PalService.DTOs.UpdateUserDto",
-        "IsRequired": true
-      }
-    ],
     "ReturnTypes": []
   },
   {

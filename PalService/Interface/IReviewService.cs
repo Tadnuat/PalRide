@@ -14,3 +14,5 @@ namespace PalService.Interface
         Task<ResponseDto<List<ReviewDto>>> GetTripReviewsAsync(int tripId);
     }
 }
+
+

@@ -82,3 +82,5 @@ namespace PalService.DTOs
         public List<ReportListDto> RecentReports { get; set; } = new List<ReportListDto>();
     }
 }
+
+

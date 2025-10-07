@@ -361,6 +361,13 @@ public partial class PalRideContext : DbContext
                 .HasDefaultValue("Passenger");
             entity.Property(e => e.StudentId).HasMaxLength(50);
             entity.Property(e => e.University).HasMaxLength(150);
+            entity.Property(e => e.Avatar).HasMaxLength(2147483647);
+            entity.Property(e => e.DriverLicenseNumber).HasMaxLength(50);
+            entity.Property(e => e.DriverLicenseImage).HasMaxLength(2147483647);
+            entity.Property(e => e.CitizenId).HasMaxLength(50);
+            entity.Property(e => e.CitizenIdImage).HasMaxLength(2147483647);
+            entity.Property(e => e.DriverLicenseVerified).HasDefaultValue(false);
+            entity.Property(e => e.CitizenIdVerified).HasDefaultValue(false);
         });
 
         modelBuilder.Entity<UserVoucher>(entity =>

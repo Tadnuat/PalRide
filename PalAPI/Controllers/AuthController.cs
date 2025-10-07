@@ -57,9 +57,12 @@ namespace PalAPI.Controllers
             => Ok(await _authService.ResendOtpAsync(dto));
 
         [Authorize]
-        [HttpPut("update/{userId}")]
-        public async Task<IActionResult> UpdateUser(int userId, UpdateUserDto dto)
-            => Ok(await _authService.UpdateUserAsync(userId, dto));
+        [HttpPut("profile")]
+        public async Task<IActionResult> UpdateProfile(UpdateUserDto dto)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            return Ok(await _authService.UpdateProfileAsync(userId, dto));
+        }
 
         [HttpDelete("delete/{email}")]
         public async Task<IActionResult> DeleteUser(string email)

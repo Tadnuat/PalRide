@@ -12,3 +12,5 @@ namespace PalService.Interface
         Task<bool> CanUserChatAsync(int userId, int tripId);
     }
 }
+
+

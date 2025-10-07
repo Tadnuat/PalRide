@@ -391,3 +391,5 @@ export default ChatScreen;
 2. **Error Handling**: Xử lý lỗi kết nối và gửi tin nhắn
 3. **Offline Support**: Lưu tin nhắn local khi offline và sync khi online
 4. **Performance**: Sử dụng pagination cho lịch sử chat dài
+
+

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PalRepository")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+906d06a4396cf06e13b032ade451991ddcd6b974")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+830dc6db3e09e0057023a866c4ffe23cc28c604b")]
 [assembly: System.Reflection.AssemblyProductAttribute("PalRepository")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PalRepository")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

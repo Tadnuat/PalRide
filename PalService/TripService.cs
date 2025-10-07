@@ -21,8 +21,9 @@ namespace PalService
         private readonly GenericRepository<Route> _routeRepo;
         private readonly BookingRepository _bookingRepo;
         private readonly INotificationService _notificationService;
+        private readonly IVerificationService _verificationService;
 
-        public TripService(PalRideContext context, UserRepository userRepo, GenericRepository<Trip> tripRepo, GenericRepository<Vehicle> vehicleRepo, GenericRepository<Route> routeRepo, BookingRepository bookingRepo, INotificationService notificationService, System.Net.Http.IHttpClientFactory httpClientFactory)
+        public TripService(PalRideContext context, UserRepository userRepo, GenericRepository<Trip> tripRepo, GenericRepository<Vehicle> vehicleRepo, GenericRepository<Route> routeRepo, BookingRepository bookingRepo, INotificationService notificationService, IVerificationService verificationService, System.Net.Http.IHttpClientFactory httpClientFactory)
         {
             _context = context;
             _userRepo = userRepo;
@@ -31,6 +32,7 @@ namespace PalService
             _routeRepo = routeRepo;
             _bookingRepo = bookingRepo;
             _notificationService = notificationService;
+            _verificationService = verificationService;
             _http = httpClientFactory.CreateClient(nameof(TripService));
             _http.DefaultRequestHeaders.UserAgent.ParseAdd("PalRide/1.0 (contact: admin@palride.example)");
             _http.Timeout = TimeSpan.FromSeconds(15);
@@ -176,6 +178,22 @@ namespace PalService
             var response = new ResponseDto<TripDto>();
             try
             {
+                // Check if driver is verified
+                var user = await _userRepo.GetByIdAsync(driverId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found";
+                    return response;
+                }
+
+                if (!await _verificationService.IsUserVerifiedForRoleAsync(driverId, user.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = await _verificationService.GetVerificationErrorMessageAsync(driverId, user.Role);
+                    return response;
+                }
+
                 // Check if vehicle exists and belongs to driver (if VehicleId is provided)
                 Vehicle vehicle = null!;
                 if (dto.VehicleId.HasValue)
@@ -780,6 +798,22 @@ namespace PalService
             var response = new ResponseDto<bool>();
             try
             {
+                // Check if driver is verified
+                var user = await _userRepo.GetByIdAsync(driverId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found";
+                    return response;
+                }
+
+                if (!await _verificationService.IsUserVerifiedForRoleAsync(driverId, user.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = await _verificationService.GetVerificationErrorMessageAsync(driverId, user.Role);
+                    return response;
+                }
+
                 var trip = await _tripRepo.GetByIdAsync(tripId);
                 if (trip == null || trip.DriverId != driverId)
                 {
@@ -834,6 +868,22 @@ namespace PalService
             var response = new ResponseDto<bool>();
             try
             {
+                // Check if driver is verified
+                var user = await _userRepo.GetByIdAsync(driverId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found";
+                    return response;
+                }
+
+                if (!await _verificationService.IsUserVerifiedForRoleAsync(driverId, user.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = await _verificationService.GetVerificationErrorMessageAsync(driverId, user.Role);
+                    return response;
+                }
+
                 var trip = await _tripRepo.GetByIdAsync(tripId);
                 if (trip == null || trip.DriverId != driverId)
                 {
@@ -1182,6 +1232,22 @@ namespace PalService
             var response = new ResponseDto<TripDto>();
             try
             {
+                // Check if passenger is verified
+                var user = await _userRepo.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found";
+                    return response;
+                }
+
+                if (!await _verificationService.IsUserVerifiedForRoleAsync(userId, user.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = await _verificationService.GetVerificationErrorMessageAsync(userId, user.Role);
+                    return response;
+                }
+
                 if (string.IsNullOrWhiteSpace(dto.PickupLocation) || string.IsNullOrWhiteSpace(dto.DropoffLocation))
                     throw new InvalidOperationException("Pickup and dropoff are required");
                 if (dto.SeatCount <= 0)
@@ -1261,6 +1327,22 @@ namespace PalService
             var response = new ResponseDto<bool>();
             try
             {
+                // Check if passenger is verified
+                var user = await _userRepo.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found";
+                    return response;
+                }
+
+                if (!await _verificationService.IsUserVerifiedForRoleAsync(userId, user.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = await _verificationService.GetVerificationErrorMessageAsync(userId, user.Role);
+                    return response;
+                }
+
                 var trip = await _tripRepo.GetByIdAsync(tripId) ?? throw new KeyNotFoundException("Request not found");
                 if (trip.DriverId != userId)
                     throw new UnauthorizedAccessException("You can only withdraw your own request");
@@ -1291,6 +1373,22 @@ namespace PalService
             var response = new ResponseDto<TripDto>();
             try
             {
+                // Check if driver is verified
+                var user = await _userRepo.GetByIdAsync(driverId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found";
+                    return response;
+                }
+
+                if (!await _verificationService.IsUserVerifiedForRoleAsync(driverId, user.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = await _verificationService.GetVerificationErrorMessageAsync(driverId, user.Role);
+                    return response;
+                }
+
                 // Get the passenger request trip
                 var requestTrip = await _tripRepo.GetByIdAsync(dto.RequestTripId) ?? 
                     throw new KeyNotFoundException("Passenger request not found");
@@ -1438,6 +1536,22 @@ namespace PalService
             var response = new ResponseDto<TripDto>();
             try
             {
+                // Check if driver is verified
+                var user = await _userRepo.GetByIdAsync(driverId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found";
+                    return response;
+                }
+
+                if (!await _verificationService.IsUserVerifiedForRoleAsync(driverId, user.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = await _verificationService.GetVerificationErrorMessageAsync(driverId, user.Role);
+                    return response;
+                }
+
                 // Get the trip to update
                 var trip = await _tripRepo.GetByIdAsync(tripId);
                 if (trip == null)

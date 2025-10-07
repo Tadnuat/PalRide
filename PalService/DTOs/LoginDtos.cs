@@ -20,6 +20,13 @@ namespace PalService.DTOs
         public string StudentId { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string Gender { get; set; }
+        public string? Avatar { get; set; }
+        public string? DriverLicenseNumber { get; set; }
+        public string? DriverLicenseImage { get; set; }
+        public string? CitizenId { get; set; }
+        public string? CitizenIdImage { get; set; }
+        public bool? DriverLicenseVerified { get; set; }
+        public bool? CitizenIdVerified { get; set; }
     }
 
     public class LoginDtos
@@ -77,14 +84,18 @@ namespace PalService.DTOs
     public class UpdateUserDto
     {
         public string FullName { get; set; }
-        public string Email { get; set; }
         public string? PhoneNumber { get; set; }
         public string Role { get; set; }
-        public string Introduce { get; set; }
-        public string University { get; set; }
-        public string StudentId { get; set; }
+        public string? Introduce { get; set; }
+        public string? University { get; set; }
+        public string? StudentId { get; set; }
         public DateTime? DateOfBirth { get; set; }
-        public string Gender { get; set; }
+        public string? Gender { get; set; }
+        public string? Avatar { get; set; }
+        public string? DriverLicenseNumber { get; set; }
+        public string? DriverLicenseImage { get; set; }
+        public string? CitizenId { get; set; }
+        public string? CitizenIdImage { get; set; }
     }
 
     public class ForgotPasswordDto
@@ -109,6 +120,14 @@ namespace PalService.DTOs
     public class SetActiveDto
     {
         public bool IsActive { get; set; }
+    }
+
+    public class UpdateUserDocumentsDto
+    {
+        public string? DriverLicenseNumber { get; set; }
+        public string? DriverLicenseImage { get; set; }
+        public string? CitizenId { get; set; }
+        public string? CitizenIdImage { get; set; }
     }
 }
 

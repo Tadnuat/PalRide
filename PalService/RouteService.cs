@@ -12,11 +12,15 @@ namespace PalService
     {
         private readonly PalRideContext _context;
         private readonly GenericRepository<Route> _routeRepo;
+        private readonly UserRepository _userRepo;
+        private readonly IVerificationService _verificationService;
 
-        public RouteService(PalRideContext context, GenericRepository<Route> routeRepo)
+        public RouteService(PalRideContext context, GenericRepository<Route> routeRepo, UserRepository userRepo, IVerificationService verificationService)
         {
             _context = context;
             _routeRepo = routeRepo;
+            _userRepo = userRepo;
+            _verificationService = verificationService;
         }
 
         public async Task<ResponseDto<RouteDto>> RegisterRouteAsync(int userId, CreateRouteDto dto)
@@ -24,6 +28,22 @@ namespace PalService
             var response = new ResponseDto<RouteDto>();
             try
             {
+                // Check if user is verified
+                var user = await _userRepo.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found";
+                    return response;
+                }
+
+                if (!await _verificationService.IsUserVerifiedForRoleAsync(userId, user.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = await _verificationService.GetVerificationErrorMessageAsync(userId, user.Role);
+                    return response;
+                }
+
                 if (string.IsNullOrWhiteSpace(dto.PickupLocation) || string.IsNullOrWhiteSpace(dto.DropoffLocation))
                     throw new InvalidOperationException("Pickup and dropoff are required");
                 if (dto.PickupLocation.Length > 255) throw new InvalidOperationException("Pickup location must be <= 255 characters");
@@ -81,6 +101,22 @@ namespace PalService
             var response = new ResponseDto<RouteDto>();
             try
             {
+                // Check if user is verified
+                var user = await _userRepo.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found";
+                    return response;
+                }
+
+                if (!await _verificationService.IsUserVerifiedForRoleAsync(userId, user.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = await _verificationService.GetVerificationErrorMessageAsync(userId, user.Role);
+                    return response;
+                }
+
                 var route = await _context.Routes.FirstOrDefaultAsync(r => r.RouteId == routeId && r.UserId == userId);
                 if (route == null)
                 {
@@ -138,6 +174,22 @@ namespace PalService
             var response = new ResponseDto<bool>();
             try
             {
+                // Check if user is verified
+                var user = await _userRepo.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found";
+                    return response;
+                }
+
+                if (!await _verificationService.IsUserVerifiedForRoleAsync(userId, user.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = await _verificationService.GetVerificationErrorMessageAsync(userId, user.Role);
+                    return response;
+                }
+
                 var route = await _context.Routes.FirstOrDefaultAsync(r => r.RouteId == routeId && r.UserId == userId);
                 if (route == null)
                 {

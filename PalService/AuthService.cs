@@ -79,7 +79,15 @@ namespace PalService
                     Role = "Both",
                     PhoneNumber = null,
                     GmailVerified = true,
-                    IsActive = true
+                    IsActive = true,
+                    // Initialize new fields with default values
+                    Avatar = null,
+                    DriverLicenseNumber = null,
+                    DriverLicenseImage = null,
+                    CitizenId = null,
+                    CitizenIdImage = null,
+                    DriverLicenseVerified = false,
+                    CitizenIdVerified = false
                 };
                 await _userRepo.CreateAsync(user);
             }
@@ -114,7 +122,15 @@ namespace PalService
                 Role = "Passenger",
                 PhoneNumber = null, // PhoneNumber is now nullable
                 GmailVerified = false,
-                IsActive = true
+                IsActive = true,
+                // Initialize new fields with default values
+                Avatar = null,
+                DriverLicenseNumber = null,
+                DriverLicenseImage = null,
+                CitizenId = null,
+                CitizenIdImage = null,
+                DriverLicenseVerified = false,
+                CitizenIdVerified = false
             };
 
             await _userRepo.CreateAsync(user);
@@ -235,18 +251,130 @@ namespace PalService
             return response;
         }
 
-        public async Task<ResponseDto<UserDto>> UpdateUserAsync(int userId, UpdateUserDto dto)
+
+        public async Task<ResponseDto<UserDto>> UpdateProfileAsync(int userId, UpdateUserDto dto)
         {
             var response = new ResponseDto<UserDto>();
             try
             {
-                var user = await _userRepo.GetByIdAsync(userId) ?? throw new KeyNotFoundException("User not found");
-
-                // Check if email is being changed and if new email already exists
-                if (!user.Email.Equals(dto.Email, StringComparison.OrdinalIgnoreCase))
+                // Validate input data
+                if (string.IsNullOrWhiteSpace(dto.FullName))
                 {
-                    var exists = await _userRepo.GetByEmailAsync(dto.Email);
-                    if (exists != null) throw new InvalidOperationException("Email is already taken");
+                    response.IsSuccess = false;
+                    response.Message = "Full name is required and cannot be empty";
+                    return response;
+                }
+
+                if (string.IsNullOrWhiteSpace(dto.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Role is required and cannot be empty";
+                    return response;
+                }
+
+                // Validate role values
+                var validRoles = new[] { "Passenger", "Driver", "Both" };
+                if (!validRoles.Contains(dto.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Role must be one of: Passenger, Driver, Both";
+                    return response;
+                }
+
+                // Validate gender if provided
+                if (!string.IsNullOrEmpty(dto.Gender))
+                {
+                    var validGenders = new[] { "Male", "Female", "Other" };
+                    if (!validGenders.Contains(dto.Gender))
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "Gender must be one of: Male, Female, Other";
+                        return response;
+                    }
+                }
+
+                // Validate date of birth if provided
+                if (dto.DateOfBirth.HasValue)
+                {
+                    if (dto.DateOfBirth.Value > DateTime.Now)
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "Date of birth cannot be in the future";
+                        return response;
+                    }
+
+                    var age = DateTime.Now.Year - dto.DateOfBirth.Value.Year;
+                    if (age < 16)
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "User must be at least 16 years old";
+                        return response;
+                    }
+                }
+
+                // Validate phone number format if provided
+                if (!string.IsNullOrEmpty(dto.PhoneNumber))
+                {
+                    // Basic phone number validation (Vietnamese format)
+                    var phonePattern = @"^(\+84|84|0)[1-9][0-9]{8,9}$";
+                    if (!System.Text.RegularExpressions.Regex.IsMatch(dto.PhoneNumber, phonePattern))
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "Phone number must be a valid Vietnamese phone number (10-11 digits starting with 0 or +84)";
+                        return response;
+                    }
+                }
+
+                // Validate string lengths
+                if (dto.FullName.Length > 100)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Full name cannot exceed 100 characters";
+                    return response;
+                }
+
+                if (!string.IsNullOrEmpty(dto.Introduce) && dto.Introduce.Length > 500)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Introduce cannot exceed 500 characters";
+                    return response;
+                }
+
+                if (!string.IsNullOrEmpty(dto.University) && dto.University.Length > 150)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "University name cannot exceed 150 characters";
+                    return response;
+                }
+
+                if (!string.IsNullOrEmpty(dto.StudentId) && dto.StudentId.Length > 50)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Student ID cannot exceed 50 characters";
+                    return response;
+                }
+
+                if (!string.IsNullOrEmpty(dto.DriverLicenseNumber) && dto.DriverLicenseNumber.Length > 50)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Driver license number cannot exceed 50 characters";
+                    return response;
+                }
+
+                if (!string.IsNullOrEmpty(dto.CitizenId) && dto.CitizenId.Length > 50)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Citizen ID cannot exceed 50 characters";
+                    return response;
+                }
+
+                // Check if user exists
+                var user = await _userRepo.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found. Please check your authentication token";
+                    return response;
                 }
 
                 // Check if phone number is being changed and if new phone number already exists
@@ -254,18 +382,30 @@ namespace PalService
                     (user.PhoneNumber != dto.PhoneNumber))
                 {
                     var phoneExists = await _userRepo.GetByPhoneNumberAsync(dto.PhoneNumber);
-                    if (phoneExists != null) throw new InvalidOperationException("Phone number is already taken");
+                    if (phoneExists != null)
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "Phone number is already taken by another user";
+                        return response;
+                    }
                 }
 
-                user.FullName = dto.FullName;
-                user.Email = dto.Email;
-                user.PhoneNumber = dto.PhoneNumber;
+                // Update user information
+                user.FullName = dto.FullName.Trim();
+                user.PhoneNumber = string.IsNullOrEmpty(dto.PhoneNumber) ? null : dto.PhoneNumber.Trim();
                 user.Role = dto.Role;
-                user.Introduce = dto.Introduce;
-                user.University = dto.University;
-                user.StudentId = dto.StudentId;
+                user.Introduce = string.IsNullOrEmpty(dto.Introduce) ? null : dto.Introduce.Trim();
+                user.University = string.IsNullOrEmpty(dto.University) ? null : dto.University.Trim();
+                user.StudentId = string.IsNullOrEmpty(dto.StudentId) ? null : dto.StudentId.Trim();
                 user.DateOfBirth = dto.DateOfBirth.HasValue ? DateOnly.FromDateTime(dto.DateOfBirth.Value.Date) : null;
-                user.Gender = dto.Gender;
+                user.Gender = string.IsNullOrEmpty(dto.Gender) ? null : dto.Gender;
+                user.Avatar = string.IsNullOrEmpty(dto.Avatar) ? null : dto.Avatar.Trim();
+                user.DriverLicenseNumber = string.IsNullOrEmpty(dto.DriverLicenseNumber) ? null : dto.DriverLicenseNumber.Trim();
+                user.DriverLicenseImage = string.IsNullOrEmpty(dto.DriverLicenseImage) ? null : dto.DriverLicenseImage.Trim();
+                user.CitizenId = string.IsNullOrEmpty(dto.CitizenId) ? null : dto.CitizenId.Trim();
+                user.CitizenIdImage = string.IsNullOrEmpty(dto.CitizenIdImage) ? null : dto.CitizenIdImage.Trim();
+                user.UpdatedAt = DateTime.UtcNow;
+                
                 await _userRepo.UpdateAsync(user);
 
                 response.Result = new UserDto
@@ -280,14 +420,45 @@ namespace PalService
                     University = user.University,
                     StudentId = user.StudentId,
                     DateOfBirth = user.DateOfBirth?.ToDateTime(TimeOnly.MinValue),
-                    Gender = user.Gender
+                    Gender = user.Gender,
+                    Avatar = user.Avatar,
+                    DriverLicenseNumber = user.DriverLicenseNumber,
+                    DriverLicenseImage = user.DriverLicenseImage,
+                    CitizenId = user.CitizenId,
+                    CitizenIdImage = user.CitizenIdImage,
+                    DriverLicenseVerified = user.DriverLicenseVerified,
+                    CitizenIdVerified = user.CitizenIdVerified
                 };
-                response.Message = "User updated successfully";
+                response.Message = "Profile updated successfully";
+            }
+            catch (KeyNotFoundException ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "User not found. Please check your authentication token and try again.";
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            catch (ArgumentException ex)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Invalid input data: {ex.Message}";
+            }
+            catch (System.Data.Common.DbException ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Database error occurred. Please try again later.";
+                // Log the actual error for debugging
+                System.Diagnostics.Debug.WriteLine($"Database Error: {ex.Message}");
             }
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = ex.Message;
+                response.Message = "An unexpected error occurred while updating your profile. Please try again later.";
+                // Log the actual error for debugging
+                System.Diagnostics.Debug.WriteLine($"Unexpected Error: {ex.Message}");
             }
             return response;
         }
@@ -404,7 +575,14 @@ namespace PalService
                     University = user.University,
                     StudentId = user.StudentId,
                     DateOfBirth = user.DateOfBirth?.ToDateTime(TimeOnly.MinValue),
-                    Gender = user.Gender
+                    Gender = user.Gender,
+                    Avatar = user.Avatar,
+                    DriverLicenseNumber = user.DriverLicenseNumber,
+                    DriverLicenseImage = user.DriverLicenseImage,
+                    CitizenId = user.CitizenId,
+                    CitizenIdImage = user.CitizenIdImage,
+                    DriverLicenseVerified = user.DriverLicenseVerified,
+                    CitizenIdVerified = user.CitizenIdVerified
                 };
                 response.Message = "Profile retrieved";
             }
