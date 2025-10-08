@@ -220,3 +220,4 @@ curl -X PUT /api/auth/profile \
   -H "Content-Type: application/json" \
   -d '{"fullName": "Test User", "role": "Passenger", "dateOfBirth": "2030-01-01T00:00:00Z"}'
 ```
+

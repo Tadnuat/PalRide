@@ -141,3 +141,4 @@ var result = await response.Content.ReadFromJsonAsync<ResponseDto<UserDto>>();
 - API mới `PUT /api/auth/profile` dành cho user cập nhật profile riêng
 - Tất cả trường mới đều được trả về trong response
 - Hàm đăng ký giờ đây khởi tạo đầy đủ tất cả trường
+

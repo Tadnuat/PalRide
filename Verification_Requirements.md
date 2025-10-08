@@ -94,3 +94,4 @@ Body: {
 - Các API tìm kiếm và xem thông tin (GET) không yêu cầu xác minh
 - Chỉ các API tạo, cập nhật, xóa mới yêu cầu xác minh
 - Admin có thể quản lý trạng thái xác minh của tất cả người dùng
+

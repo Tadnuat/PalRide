@@ -10,3 +10,4 @@ namespace PalService.Interface
         Task<ResponseDto<bool>> UpdateUserDocumentsAsync(int userId, UpdateUserDocumentsDto dto);
     }
 }
+

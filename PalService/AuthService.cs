@@ -293,37 +293,7 @@ namespace PalService
                     }
                 }
 
-                // Validate date of birth if provided
-                if (dto.DateOfBirth.HasValue)
-                {
-                    if (dto.DateOfBirth.Value > DateTime.Now)
-                    {
-                        response.IsSuccess = false;
-                        response.Message = "Date of birth cannot be in the future";
-                        return response;
-                    }
-
-                    var age = DateTime.Now.Year - dto.DateOfBirth.Value.Year;
-                    if (age < 16)
-                    {
-                        response.IsSuccess = false;
-                        response.Message = "User must be at least 16 years old";
-                        return response;
-                    }
-                }
-
-                // Validate phone number format if provided
-                if (!string.IsNullOrEmpty(dto.PhoneNumber))
-                {
-                    // Basic phone number validation (Vietnamese format)
-                    var phonePattern = @"^(\+84|84|0)[1-9][0-9]{8,9}$";
-                    if (!System.Text.RegularExpressions.Regex.IsMatch(dto.PhoneNumber, phonePattern))
-                    {
-                        response.IsSuccess = false;
-                        response.Message = "Phone number must be a valid Vietnamese phone number (10-11 digits starting with 0 or +84)";
-                        return response;
-                    }
-                }
+                // Date of birth and phone number validation removed as requested
 
                 // Validate string lengths
                 if (dto.FullName.Length > 100)
@@ -377,18 +347,7 @@ namespace PalService
                     return response;
                 }
 
-                // Check if phone number is being changed and if new phone number already exists
-                if (!string.IsNullOrEmpty(dto.PhoneNumber) && 
-                    (user.PhoneNumber != dto.PhoneNumber))
-                {
-                    var phoneExists = await _userRepo.GetByPhoneNumberAsync(dto.PhoneNumber);
-                    if (phoneExists != null)
-                    {
-                        response.IsSuccess = false;
-                        response.Message = "Phone number is already taken by another user";
-                        return response;
-                    }
-                }
+                // Phone number uniqueness check removed as requested
 
                 // Update user information
                 user.FullName = dto.FullName.Trim();

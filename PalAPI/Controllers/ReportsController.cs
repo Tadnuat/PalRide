@@ -24,10 +24,25 @@ namespace PalAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateReport([FromBody] CreateReportDto dto)
         {
-            var userId = GetCurrentUserId();
-            var result = await _reportService.CreateReportAsync(userId, dto);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var userId = GetCurrentUserId();
+                var result = await _reportService.CreateReportAsync(userId, dto);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while creating report. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -37,10 +52,29 @@ namespace PalAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateReport(int reportId, [FromBody] UpdateReportDto dto)
         {
-            var adminId = GetCurrentUserId();
-            var result = await _reportService.UpdateReportAsync(reportId, adminId, dto);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var adminId = GetCurrentUserId();
+                var result = await _reportService.UpdateReportAsync(reportId, adminId, dto);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while updating report. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -50,10 +84,29 @@ namespace PalAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteReport(int reportId)
         {
-            var adminId = GetCurrentUserId();
-            var result = await _reportService.DeleteReportAsync(reportId, adminId);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var adminId = GetCurrentUserId();
+                var result = await _reportService.DeleteReportAsync(reportId, adminId);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while deleting report. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -62,9 +115,24 @@ namespace PalAPI.Controllers
         [HttpGet("{reportId}")]
         public async Task<IActionResult> GetReportById(int reportId)
         {
-            var result = await _reportService.GetReportByIdAsync(reportId);
-            if (!result.IsSuccess) return NotFound(result);
-            return Ok(result);
+            try
+            {
+                var result = await _reportService.GetReportByIdAsync(reportId);
+                if (!result.IsSuccess) return NotFound(result);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving report details. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -74,9 +142,20 @@ namespace PalAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllReports([FromQuery] ReportFilterDto filter)
         {
-            var result = await _reportService.GetAllReportsAsync(filter);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var result = await _reportService.GetAllReportsAsync(filter);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving all reports. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -85,10 +164,21 @@ namespace PalAPI.Controllers
         [HttpGet("my-reports")]
         public async Task<IActionResult> GetMyReports()
         {
-            var userId = GetCurrentUserId();
-            var result = await _reportService.GetUserReportsAsync(userId);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var userId = GetCurrentUserId();
+                var result = await _reportService.GetUserReportsAsync(userId);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving your reports. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -98,9 +188,16 @@ namespace PalAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetReportStats()
         {
-            var result = await _reportService.GetReportStatsAsync();
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var result = await _reportService.GetReportStatsAsync();
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving report statistics. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -110,9 +207,20 @@ namespace PalAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetReportsByStatus(string status)
         {
-            var result = await _reportService.GetReportsByStatusAsync(status);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var result = await _reportService.GetReportsByStatusAsync(status);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving reports by status. Please try again later." });
+            }
         }
 
         private int GetCurrentUserId()
@@ -126,5 +234,6 @@ namespace PalAPI.Controllers
         }
     }
 }
+
 
 

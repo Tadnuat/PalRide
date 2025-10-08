@@ -24,10 +24,21 @@ namespace PalAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] CreateVoucherDto dto)
         {
-            var adminId = GetCurrentUserId();
-            var result = await _voucherService.CreateVoucherAsync(dto, adminId);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var adminId = GetCurrentUserId();
+                var result = await _voucherService.CreateVoucherAsync(dto, adminId);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while creating voucher. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -37,10 +48,25 @@ namespace PalAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int voucherId, [FromBody] UpdateVoucherDto dto)
         {
-            var adminId = GetCurrentUserId();
-            var result = await _voucherService.UpdateVoucherAsync(voucherId, dto, adminId);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var adminId = GetCurrentUserId();
+                var result = await _voucherService.UpdateVoucherAsync(voucherId, dto, adminId);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while updating voucher. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -50,10 +76,25 @@ namespace PalAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int voucherId)
         {
-            var adminId = GetCurrentUserId();
-            var result = await _voucherService.DeleteVoucherAsync(voucherId, adminId);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var adminId = GetCurrentUserId();
+                var result = await _voucherService.DeleteVoucherAsync(voucherId, adminId);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while deleting voucher. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -63,9 +104,24 @@ namespace PalAPI.Controllers
         [Authorize]
         public async Task<IActionResult> GetById(int voucherId)
         {
-            var result = await _voucherService.GetVoucherByIdAsync(voucherId);
-            if (!result.IsSuccess) return NotFound(result);
-            return Ok(result);
+            try
+            {
+                var result = await _voucherService.GetVoucherByIdAsync(voucherId);
+                if (!result.IsSuccess) return NotFound(result);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving voucher details. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -75,9 +131,16 @@ namespace PalAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _voucherService.GetAllVouchersAsync();
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var result = await _voucherService.GetAllVouchersAsync();
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving all vouchers. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -87,9 +150,16 @@ namespace PalAPI.Controllers
         [Authorize]
         public async Task<IActionResult> GetActive()
         {
-            var result = await _voucherService.GetActiveVouchersAsync();
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var result = await _voucherService.GetActiveVouchersAsync();
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving active vouchers. Please try again later." });
+            }
         }
 
         private int GetCurrentUserId()

@@ -20,13 +20,25 @@ namespace PalAPI.Controllers
         [Authorize(Roles = "Driver,Both")]
         public async Task<IActionResult> GetDriverSummary()
         {
-            var driverId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var result = await _walletService.GetDriverWalletSummaryAsync(driverId);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var driverId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                var result = await _walletService.GetDriverWalletSummaryAsync(driverId);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving driver wallet summary. Please try again later." });
+            }
         }
     }
 }
+
 
 
 

@@ -10,3 +10,4 @@ namespace PalService.Interface
         Task<string> GetVerificationErrorMessageAsync(int userId, string role);
     }
 }
+

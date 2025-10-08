@@ -24,10 +24,21 @@ namespace PalAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterRoute(CreateRouteDto dto)
         {
-            var userId = GetCurrentUserId();
-            var result = await _routeService.RegisterRouteAsync(userId, dto);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var userId = GetCurrentUserId();
+                var result = await _routeService.RegisterRouteAsync(userId, dto);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while registering route. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -36,10 +47,29 @@ namespace PalAPI.Controllers
         [HttpPut("{routeId}")]
         public async Task<IActionResult> UpdateRoute(int routeId, UpdateRouteDto dto)
         {
-            var userId = GetCurrentUserId();
-            var result = await _routeService.UpdateRouteAsync(userId, routeId, dto);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var userId = GetCurrentUserId();
+                var result = await _routeService.UpdateRouteAsync(userId, routeId, dto);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while updating route. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -48,10 +78,29 @@ namespace PalAPI.Controllers
         [HttpDelete("{routeId}")]
         public async Task<IActionResult> DeleteRoute(int routeId)
         {
-            var userId = GetCurrentUserId();
-            var result = await _routeService.DeleteRouteAsync(userId, routeId);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var userId = GetCurrentUserId();
+                var result = await _routeService.DeleteRouteAsync(userId, routeId);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while deleting route. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -60,10 +109,21 @@ namespace PalAPI.Controllers
         [HttpGet("my-routes")]
         public async Task<IActionResult> GetMyRoutes()
         {
-            var userId = GetCurrentUserId();
-            var result = await _routeService.GetUserRoutesAsync(userId);
-            if (!result.IsSuccess) return BadRequest(result);
-            return Ok(result);
+            try
+            {
+                var userId = GetCurrentUserId();
+                var result = await _routeService.GetUserRoutesAsync(userId);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving your routes. Please try again later." });
+            }
         }
 
         /// <summary>
@@ -72,9 +132,24 @@ namespace PalAPI.Controllers
         [HttpGet("{routeId}")]
         public async Task<IActionResult> GetRouteById(int routeId)
         {
-            var result = await _routeService.GetRouteByIdAsync(routeId);
-            if (!result.IsSuccess) return NotFound(result);
-            return Ok(result);
+            try
+            {
+                var result = await _routeService.GetRouteByIdAsync(routeId);
+                if (!result.IsSuccess) return NotFound(result);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving route details. Please try again later." });
+            }
         }
 
         private int GetCurrentUserId()

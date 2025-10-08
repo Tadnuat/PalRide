@@ -21,52 +21,105 @@ namespace PalAPI.Controllers
         [HttpGet("my")]
         public async Task<IActionResult> GetMyNotifications()
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var result = await _notificationService.GetUserNotificationsAsync(userId);
-            
-            if (!result.IsSuccess)
-                return BadRequest(result);
-            
-            return Ok(result);
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                var result = await _notificationService.GetUserNotificationsAsync(userId);
+                
+                if (!result.IsSuccess)
+                    return BadRequest(result);
+                
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving notifications. Please try again later." });
+            }
         }
 
         [HttpPut("{notificationId}/read")]
         public async Task<IActionResult> MarkAsRead(int notificationId)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var result = await _notificationService.MarkAsReadAsync(notificationId, userId);
-            
-            if (!result.IsSuccess)
-                return BadRequest(result);
-            
-            return Ok(result);
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                var result = await _notificationService.MarkAsReadAsync(notificationId, userId);
+                
+                if (!result.IsSuccess)
+                    return BadRequest(result);
+                
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while marking notification as read. Please try again later." });
+            }
         }
 
         [HttpPut("read-all")]
         public async Task<IActionResult> MarkAllAsRead()
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var result = await _notificationService.MarkAllAsReadAsync(userId);
-            
-            if (!result.IsSuccess)
-                return BadRequest(result);
-            
-            return Ok(result);
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                var result = await _notificationService.MarkAllAsReadAsync(userId);
+                
+                if (!result.IsSuccess)
+                    return BadRequest(result);
+                
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while marking all notifications as read. Please try again later." });
+            }
         }
 
         [HttpGet("unread-count")]
         public async Task<IActionResult> GetUnreadCount()
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var result = await _notificationService.GetUnreadCountAsync(userId);
-            
-            if (!result.IsSuccess)
-                return BadRequest(result);
-            
-            return Ok(result);
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                var result = await _notificationService.GetUnreadCountAsync(userId);
+                
+                if (!result.IsSuccess)
+                    return BadRequest(result);
+                
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving unread count. Please try again later." });
+            }
         }
     }
 }
+
 
 
 

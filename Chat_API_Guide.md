@@ -393,3 +393,4 @@ export default ChatScreen;
 4. **Performance**: Sử dụng pagination cho lịch sử chat dài
 
 
+
