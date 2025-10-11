@@ -236,6 +236,60 @@ namespace PalAPI.Controllers
             }
         }
 
+        [HttpGet("my-requests")]
+        [Authorize(Roles = "Passenger,Both")]
+        public async Task<IActionResult> GetMyPassengerRequests()
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                var result = await _tripService.GetMyPassengerRequestsAsync(userId);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while retrieving your passenger requests. Please try again later." });
+            }
+        }
+
+        [HttpPut("request/{tripId}")]
+        [Authorize(Roles = "Passenger,Both")]
+        public async Task<IActionResult> UpdatePassengerRequest(int tripId, [FromBody] UpdatePassengerRequestDto dto)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                var result = await _tripService.UpdatePassengerRequestAsync(userId, tripId, dto);
+                if (!result.IsSuccess) return BadRequest(result);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { isSuccess = false, message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { isSuccess = false, message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { isSuccess = false, message = $"Invalid input data: {ex.Message}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { isSuccess = false, message = "An unexpected error occurred while updating passenger request. Please try again later." });
+            }
+        }
+
         [HttpGet("my-trips")]
         [Authorize(Roles = "Driver,Both")]
         public async Task<IActionResult> GetMyTrips()

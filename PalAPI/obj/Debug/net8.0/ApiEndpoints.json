@@ -1124,6 +1124,16 @@
   },
   {
     "ContainingType": "PalAPI.Controllers.TripsController",
+    "Method": "GetMyPassengerRequests",
+    "RelativePath": "api/Trips/my-requests",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.TripsController",
     "Method": "GetMyTrips",
     "RelativePath": "api/Trips/my-trips",
     "HttpMethod": "GET",
@@ -1174,6 +1184,27 @@
       {
         "Name": "dto",
         "Type": "PalService.DTOs.CreatePassengerRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PalAPI.Controllers.TripsController",
+    "Method": "UpdatePassengerRequest",
+    "RelativePath": "api/Trips/request/{tripId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tripId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "PalService.DTOs.UpdatePassengerRequestDto",
         "IsRequired": true
       }
     ],

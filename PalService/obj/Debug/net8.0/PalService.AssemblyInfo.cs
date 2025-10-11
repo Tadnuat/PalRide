@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PalService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d6e282d9a91d2a242c325eda62f32ae368dae18")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec8df6ae69593b86fc9f1f7ef127438942a00cd4")]
 [assembly: System.Reflection.AssemblyProductAttribute("PalService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PalService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

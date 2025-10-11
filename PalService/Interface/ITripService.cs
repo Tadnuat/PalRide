@@ -24,5 +24,7 @@ namespace PalService.Interface
         Task<ResponseDto<bool>> WithdrawPassengerRequestAsync(int userId, int tripId);
         Task<ResponseDto<TripDto>> AcceptPassengerRequestAsync(int driverId, AcceptPassengerRequestDto dto);
         Task<ResponseDto<TripDto>> UpdateTripAsync(int tripId, int driverId, UpdateTripDto dto);
+        Task<ResponseDto<List<TripDto>>> GetMyPassengerRequestsAsync(int userId);
+        Task<ResponseDto<TripDto>> UpdatePassengerRequestAsync(int userId, int tripId, UpdatePassengerRequestDto dto);
     }
 }

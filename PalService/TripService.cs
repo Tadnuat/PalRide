@@ -1762,5 +1762,207 @@ namespace PalService
             }
             return response;
         }
+
+        public async Task<ResponseDto<List<TripDto>>> GetMyPassengerRequestsAsync(int userId)
+        {
+            var response = new ResponseDto<List<TripDto>>();
+            try
+            {
+                // Get all passenger requests created by this user
+                var requests = await _context.Trips
+                    .Where(t => t.DriverId == userId && t.TripType == "Request")
+                    .OrderByDescending(t => t.CreatedAt)
+                    .ToListAsync();
+
+                var list = new List<TripDto>();
+                foreach (var req in requests)
+                {
+                    var owner = await _userRepo.GetByIdAsync(req.DriverId);
+                    list.Add(new TripDto
+                    {
+                        TripId = req.TripId,
+                        DriverId = req.DriverId,
+                        DriverName = owner?.FullName ?? "",
+                        PickupLocation = req.PickupLocation,
+                        DropoffLocation = req.DropoffLocation,
+                        StartTime = req.StartTime,
+                        EndTime = req.EndTime,
+                        PricePerSeat = req.PricePerSeat,
+                        PriceFullRide = req.PriceFullRide ?? 0,
+                        SeatTotal = req.SeatTotal,
+                        SeatAvailable = req.SeatAvailable,
+                        Status = req.Status,
+                        TripType = req.TripType,
+                        Note = req.Note,
+                        CreatedAt = req.CreatedAt
+                    });
+                }
+
+                response.Result = list;
+                response.Message = "My passenger requests retrieved";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseDto<TripDto>> UpdatePassengerRequestAsync(int userId, int tripId, UpdatePassengerRequestDto dto)
+        {
+            var response = new ResponseDto<TripDto>();
+            try
+            {
+                // Check if user is verified
+                var user = await _userRepo.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "User not found";
+                    return response;
+                }
+
+                if (!await _verificationService.IsUserVerifiedForRoleAsync(userId, user.Role))
+                {
+                    response.IsSuccess = false;
+                    response.Message = await _verificationService.GetVerificationErrorMessageAsync(userId, user.Role);
+                    return response;
+                }
+
+                // Get the passenger request
+                var trip = await _tripRepo.GetByIdAsync(tripId) ?? throw new KeyNotFoundException("Request not found");
+                
+                // Validate ownership
+                if (trip.DriverId != userId)
+                    throw new UnauthorizedAccessException("You can only update your own request");
+
+                // Validate trip type
+                if (trip.TripType != "Request")
+                    throw new InvalidOperationException("This is not a passenger request");
+
+                // Check if request can be updated (not accepted by driver)
+                if (trip.Status == "Accepted" || trip.Status == "Completed" || trip.Status == "Cancelled")
+                    throw new InvalidOperationException("Cannot update request that has been accepted or completed");
+
+                // Validate input data
+                if (!string.IsNullOrEmpty(dto.PickupLocation))
+                {
+                    if (dto.PickupLocation.Length > 255)
+                        throw new InvalidOperationException("Pickup location must be <= 255 characters");
+                    trip.PickupLocation = dto.PickupLocation.Trim();
+                }
+
+                if (!string.IsNullOrEmpty(dto.DropoffLocation))
+                {
+                    if (dto.DropoffLocation.Length > 255)
+                        throw new InvalidOperationException("Dropoff location must be <= 255 characters");
+                    trip.DropoffLocation = dto.DropoffLocation.Trim();
+                }
+
+                if (dto.StartTime.HasValue)
+                {
+                    if (dto.StartTime.Value <= DateTime.Now)
+                        throw new InvalidOperationException("Start time must be in the future");
+                    trip.StartTime = dto.StartTime.Value;
+                }
+
+                if (dto.SeatCount.HasValue)
+                {
+                    if (dto.SeatCount.Value <= 0)
+                        throw new InvalidOperationException("Seat count must be greater than 0");
+                    trip.SeatTotal = (byte)Math.Max(1, dto.SeatCount.Value);
+                }
+
+                if (dto.FullRide.HasValue)
+                {
+                    if (dto.FullRide.Value)
+                    {
+                        trip.PricePerSeat = 0;
+                        trip.PriceFullRide = dto.OfferedPrice ?? 0;
+                    }
+                    else
+                    {
+                        trip.PricePerSeat = dto.OfferedPrice ?? 0;
+                        trip.PriceFullRide = null;
+                    }
+                }
+                else if (dto.OfferedPrice.HasValue)
+                {
+                    if (trip.PriceFullRide.HasValue)
+                        trip.PriceFullRide = dto.OfferedPrice.Value;
+                    else
+                        trip.PricePerSeat = dto.OfferedPrice.Value;
+                }
+
+                if (dto.Note != null)
+                {
+                    if (dto.Note.Length > 500)
+                        throw new InvalidOperationException("Note must be <= 500 characters");
+                    trip.Note = string.IsNullOrEmpty(dto.Note) ? null : dto.Note.Trim();
+                }
+
+                // Check for time conflicts if start time is being updated
+                if (dto.StartTime.HasValue)
+                {
+                    var hasTimeConflict = await HasTimeConflictAsync(userId, dto.StartTime.Value, tripId);
+                    if (hasTimeConflict)
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "You already have a request scheduled around this time (within 2 hours)";
+                        return response;
+                    }
+                }
+
+                await _tripRepo.UpdateAsync(trip);
+
+                var passenger = await _userRepo.GetByIdAsync(userId);
+                response.Result = new TripDto
+                {
+                    TripId = trip.TripId,
+                    DriverId = trip.DriverId,
+                    DriverName = passenger?.FullName ?? "",
+                    PickupLocation = trip.PickupLocation,
+                    DropoffLocation = trip.DropoffLocation,
+                    StartTime = trip.StartTime,
+                    EndTime = trip.EndTime,
+                    PricePerSeat = trip.PricePerSeat,
+                    PriceFullRide = trip.PriceFullRide ?? 0,
+                    SeatTotal = trip.SeatTotal,
+                    SeatAvailable = trip.SeatAvailable,
+                    Status = trip.Status,
+                    TripType = trip.TripType,
+                    Note = trip.Note,
+                    CreatedAt = trip.CreatedAt
+                };
+                response.Message = "Passenger request updated successfully";
+            }
+            catch (KeyNotFoundException ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            catch (InvalidOperationException ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            catch (ArgumentException ex)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Invalid input data: {ex.Message}";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
     }
 }

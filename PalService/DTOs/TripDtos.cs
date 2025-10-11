@@ -157,6 +157,17 @@ namespace PalService.DTOs
         public decimal? PriceFullRide { get; set; }
         public string? Note { get; set; }
     }
+
+    public class UpdatePassengerRequestDto
+    {
+        public string? PickupLocation { get; set; }
+        public string? DropoffLocation { get; set; }
+        public DateTime? StartTime { get; set; }
+        public int? SeatCount { get; set; }
+        public bool? FullRide { get; set; }
+        public decimal? OfferedPrice { get; set; }
+        public string? Note { get; set; }
+    }
 }
 
 
